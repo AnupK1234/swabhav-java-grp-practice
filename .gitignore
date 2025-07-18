@@ -1,0 +1,57 @@
+# Gradle
+.gradle/
+build/
+.settings/
+.idea/
+.vscode/
+
+# Build results
+*.jar
+*.war
+*.ear
+*.zip
+*.tar
+*.tar.gz
+*.class
+*.bak
+
+# Generated files
+/bin/
+/out/
+
+# Local configuration
+local.properties
+.DS_Store # macOS specific
+Thumbs.db # Windows specific
+
+# Log files
+*.log
+logs/
+
+# Test reports and results
+/build/reports/
+/build/test-results/
+
+# IntelliJ IDEA (if applicable, even with Gradle)
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Eclipse (if applicable)
+.project
+.classpath
+.settings/
+bin/
+
+# VS Code (if applicable)
+.vscode/
+
+# OS-specific files
+.DS_Store
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Any specific temporary files you might create
+*.tmp
