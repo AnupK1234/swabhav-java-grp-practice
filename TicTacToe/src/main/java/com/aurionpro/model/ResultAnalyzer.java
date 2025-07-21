@@ -8,7 +8,7 @@ public class ResultAnalyzer {
 		this.board = board;
 	}
 
-	private boolean checkHorizontal() {
+	public boolean checkHorizontal() {
 		for (int row = 0; row < 3; row++) {
 			MarkType m1 = board.getCellMark(row, 0);
 			MarkType m2 = board.getCellMark(row, 1);
@@ -20,7 +20,7 @@ public class ResultAnalyzer {
 		return false;
 	}
 
-	private boolean checkVertical() {
+	public boolean checkVertical() {
 		for (int col = 0; col < 3; col++) {
 			MarkType m1 = board.getCellMark(0, col);
 			MarkType m2 = board.getCellMark(1, col);
@@ -32,7 +32,7 @@ public class ResultAnalyzer {
 		return false;
 	}
 
-	private boolean checkDiagonal() {
+	public boolean checkDiagonal() {
 		MarkType c00 = board.getCellMark(0, 0);
 		MarkType c11 = board.getCellMark(1, 1);
 		MarkType c22 = board.getCellMark(2, 2);

@@ -68,4 +68,9 @@ public class BoardTest {
 	void testGetCellMark_ShouldReturnEmptyByDefault() {
 		assertEquals(MarkType.EMPTY, board.getCellMark(2, 2));
 	}
+	
+	@Test
+	void testHorizontalWinCheck_firstRowWin() {
+		
+	}
 }
