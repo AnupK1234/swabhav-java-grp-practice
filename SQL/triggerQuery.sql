@@ -140,7 +140,7 @@ BEGIN
 END $$
 DELIMITER ;
 
-call getsomedata();
+call getsomedata(2);
 
 
 
