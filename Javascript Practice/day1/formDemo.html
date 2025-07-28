@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Simple Form to Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 8px;
+        }
+
+        table {
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>User Form</h2>
+    <form id="userForm" onsubmit="addToTable(event)">
+        <label>ID: <input type="number" id="id" required></label><br><br>
+        <label>First Name: <input type="text" id="firstName" required></label><br><br>
+        <label>Last Name: <input type="text" id="lastName" required></label><br><br>
+        <label>Email: <input type="email" id="email" required></label><br><br>
+        <button type="submit">Add to Table</button>
+    </form>
+
+    <table id="userTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be appended here -->
+        </tbody>
+    </table>
+
+    <script src="index2.js"></script>
+
+</body>
+
+</html>
