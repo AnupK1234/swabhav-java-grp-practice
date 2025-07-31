@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Cart</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <h2>Product Cart</h2>
+
+    <div class="form-group">
+        <label for="product">Product:</label>
+        <select id="product">
+            <option value="Laptop" data-price="60000">Laptop - ₹60,000</option>
+            <option value="Phone" data-price="25000">Phone - ₹25,000</option>
+            <option value="Headphones" data-price="2000">Headphones - ₹2,000</option>
+            <option value="Keyboard" data-price="1500">Keyboard - ₹1,500</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" min="1" value="1">
+    </div>
+
+    <button onclick="addToCart()">Add to Cart</button>
+
+    <table id="cart-table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price (₹)</th>
+                <th>Total (₹)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Cart items will be inserted here -->
+        </tbodwy>
+    </table>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
