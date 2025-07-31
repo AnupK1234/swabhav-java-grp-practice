@@ -1,9 +1,9 @@
 const numbers = [5, 10, 15, 20, 25, 30];
 const users = [
-  { name: "Alice", age: 25 },
-  { name: "Bob", age: 17 },
-  { name: "Charlie", age: 32 },
-  { name: "David", age: 16 }
+  { name: "Anup", age: 25 },
+  { name: "Nilesh", age: 17 },
+  { name: "Vivek", age: 32 },
+  { name: "Mayur", age: 16 }
 ];
 
 const doubled = numbers.map(num => num * 2);

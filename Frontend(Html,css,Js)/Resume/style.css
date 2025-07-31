@@ -1,0 +1,104 @@
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to right, #fdfbfb, #ebedee);
+  margin: 0;
+  padding: 20px;
+  color: #333;
+}
+
+#resumeContainer.one-column {
+  display: block;
+}
+
+#resumeContainer.two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+
+}
+.skills{
+  width: 100%;
+}
+#resumeContainer section {
+  margin-bottom: 10px;
+}
+
+section {
+  background: #ffffffee;
+  padding: 18px 22px;
+  margin: 12px auto;
+  max-width: 900px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+  transition: box-shadow 0.3s ease;
+}
+
+section:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: #b30000;
+  border-bottom: 2px dashed #b30000;
+  padding-bottom: 5px;
+  margin-bottom: 12px;
+  font-size: 20px;
+}
+
+h3, h4 {
+  margin: 6px 0;
+  font-weight: 500;
+  font-size: 17px;
+}
+
+p {
+  line-height: 1.6;
+  font-size: 15.5px;
+  margin: 6px 0;
+}
+
+b {
+  color: #222;
+  font-weight: 600;
+}
+
+i {
+  color: #555;
+  font-style: italic;
+}
+
+button {
+  background: linear-gradient(to right, #ffc107, #ff9800);
+  border: none;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 8px;
+  margin: 10px auto 25px;
+  color: #333;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+  transition: background 0.3s ease, transform 0.2s ease;
+  display: block;
+}
+
+button:hover {
+  background: linear-gradient(to right, #ffb300, #ff6f00);
+  transform: scale(1.0);
+}
+
+.profile {
+  text-align: center;
+}
+
+.profile img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+
