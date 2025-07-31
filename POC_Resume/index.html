@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mayur Ashok Khatal - Resume</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="controls">
+      <button onclick="toggleLayout()">Switch button</button>
+      <button onclick="window.print()">Print Resume</button>
+    </div>
+
+    <div id="resume" class="resume single-page">
+      <section class="section">
+        <h2>PERSONAL DETAILS</h2>
+        <p><strong>Name as per Aadhar record:</strong> Mayur Ashok Khatal</p>
+        <p><strong>Contact Number:</strong> +91 86930 49610</p>
+        <p><strong>Email ID:</strong> mayurkhatal11@gmail.com</p>
+        <p>
+          <strong>Permanent Address:</strong> S S II, Sector 5, Room No. 120,
+          Koparkhairane, Navi Mumbai
+        </p>
+        <p><strong>Aadhar Number:</strong> 8514 9190 1097</p>
+      </section>
+
+      <section class="section">
+        <h2>CAREER OBJECTIVES AND GOAL</h2>
+        <p>
+          Seeking for opportunity to utilize my technical knowledge in practical
+          form to get the best results by learning indefinitely. To gain
+          experience and professional abilities for brighter future more than
+          today.
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>EDUCATIONAL QUALIFICATION</h2>
+        <ul>
+          <li>
+            B.E. (Computer Engineering) Pursuing from DATTA MEGHE COLLEGE OF
+            ENGINEERING (D.M.C.E.), Mumbai University (Passing Year 2025)
+            aggregate percentage around 8.57 till Semester VII.
+          </li>
+          <li>
+            H.S.C Passed from R. F. Naik Jr. College, Maharashtra State Board
+            achieving 94.17% (Passing Year 2021).
+          </li>
+          <li>
+            S.S.C Passed from R. F. Naik Jr. College, Maharashtra State Board
+            achieving 91.80% (Passing Year 2019).
+          </li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>SKILLS</h2>
+        <ul>
+          <li>HTML, CSS, JavaScript, Node.js</li>
+          <li>MongoDB, MySQL</li>
+          <li>Java</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>PROJECT</h2>
+
+        <h3>Resort Aggregator System:</h3>
+        <ol>
+          <li>
+            <strong>Web Platform Development:</strong> Created a user-friendly
+            website that aggregates resort listings, allowing users to search
+            and book resorts by location.
+          </li>
+          <li>
+            <strong>Backend Integration:</strong> Implemented dynamic data
+            management for resort owners and users ensuring real-time updates
+            and seamless interactions.
+          </li>
+        </ol>
+
+        <h3>BookBridge:</h3>
+        <ol>
+          <li>
+            <strong>MERN Stack Application:</strong> Developed BooksBridge, a
+            web platform for users to discover and manage their reading lists
+            using the MERN stack.
+          </li>
+          <li>
+            <strong>Real-Time Book Management:</strong> Implemented a dynamic
+            backend for efficient book listings and user interactions, enhancing
+            the overall user experience.
+          </li>
+        </ol>
+      </section>
+    </div>
+
+    <script>
+
+      function toggleLayout() {
+        const resume = document.getElementById("resume");
+
+        if (resume.classList.contains("single-page")) {
+          resume.classList.remove("single-page");
+          resume.classList.add("two-page");
+        } else {
+          resume.classList.remove("two-page");
+          resume.classList.add("single-page");
+        }
+      }
+    </script>
+  </body>
+</html>
