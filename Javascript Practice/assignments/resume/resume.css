@@ -1,0 +1,148 @@
+:root {
+  --font-main: 'Segoe UI', sans-serif;
+  --light-bg: #ffffff;
+  --light-text: #1e1e1e;
+  --dark-bg: #121212;
+  --dark-text: #f4f4f4;
+  --primary: #3498db;
+  --muted: #888;
+}
+
+/* Global Styles */
+body {
+  font-family: var(--font-main);
+  margin: 0;
+  padding: 20px;
+  background: var(--light-bg);
+  color: var(--light-text);
+  transition: background 0.3s, color 0.3s;
+}
+
+/* Toolbar */
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 10px 15px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #2c80b4;
+}
+
+/* Resume Wrapper */
+.resume {
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ccc;
+  background: var(--light-bg);
+  color: var(--light-text);
+}
+
+.resume.dark-mode {
+  background: var(--dark-bg);
+  color: var(--dark-text);
+}
+
+.resume.dark-mode a {
+  color: #90caf9;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  margin-bottom: 5px;
+  font-size: 2rem;
+}
+
+.header p, .header a {
+  margin: 3px 0;
+  color: var(--muted);
+}
+
+.header a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.header a:hover {
+  text-decoration: underline;
+}
+
+/* Sections */
+.section {
+  margin-bottom: 30px;
+}
+
+.section h2 {
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+}
+
+.item {
+  margin-bottom: 15px;
+}
+
+.item h3 {
+  margin: 0 0 5px;
+  font-size: 1.1rem;
+}
+
+.item ul {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.item ul li {
+  margin-bottom: 6px;
+}
+
+/* Two Column Layout */
+.two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 40px;
+}
+
+.two-column .header {
+  grid-column: span 2;
+  text-align: center;
+}
+
+.two-column .section:nth-child(3),
+.two-column .section:nth-child(4) {
+  grid-column: 1;
+}
+
+.two-column .section:nth-child(5),
+.two-column .section:nth-child(6),
+.two-column .section:nth-child(7) {
+  grid-column: 2;
+}
+
+/* Light & Dark Mode */
+.light-mode {
+  background: var(--light-bg);
+  color: var(--light-text);
+}
+
+.dark-mode {
+  background: var(--dark-bg);
+  color: var(--dark-text);
+}
