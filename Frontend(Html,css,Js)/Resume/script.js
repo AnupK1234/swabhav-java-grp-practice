@@ -4,3 +4,4 @@ function toggleResume() {
   container.classList.toggle("two-column");
   container.classList.toggle("one-column");
 }
+    
