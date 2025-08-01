@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Cart App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h2>Shopping Cart</h2>
+
+  <label for="product">Product:</label>
+  <select id="product">
+    <option value="1" data-name="Burger" data-price="150">Burger - Rs. 150</option>
+    <option value="2" data-name="Pizza" data-price="200">Pizza - Rs. 200</option>
+    <option value="3" data-name="Dosa" data-price="70">Dosa - Rs. 70</option>
+  </select>
+
+  <label for="quantity">Quantity:</label>
+  <input type="number" id="quantity" min="1" value="1">
+
+  <button onclick="addToCart()">Add to Cart</button>
+
+  <table id="cartTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Total Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Cart items will appear here -->
+    </tbody>
+  </table>
+
+  <script src="script.js">
+    
+  </script>
+
+</body>
+</html>
