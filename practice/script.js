@@ -33,3 +33,21 @@ const c = array2.reduce((h1,h2)=> {
 
 console.log(c);
 
+//++++++++++++++++ Hoisting ++++++++++++++++++++++++++
+
+
+
+var greet = () => {
+    console.log("Good morning");
+    
+}
+greet();
+
+
+
+
+// console.log(a);
+
+const a = 5;
+
+console.log(a);
