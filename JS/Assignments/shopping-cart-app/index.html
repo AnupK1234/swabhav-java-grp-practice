@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minimalist E-commerce</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="min-h-screen flex flex-col items-center p-8 text-gray-800">
+    <header class="w-full max-w-2xl text-center py-6">
+      <h1 class="text-4xl font-bold tracking-tight">E-commerce Product</h1>
+    </header>
+
+    <main class="w-full max-w-2xl bg-blue-200 rounded-xl shadow-lg p-8 space-y-8">
+      <div class="space-y-4">
+        <h2 class="text-2xl font-semibold">Order Your Product</h2>
+
+        <div
+          class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4"
+        >
+          <div class="w-full md:w-1/2">
+            <label
+              for="product-select"
+              class="block text-sm font-medium text-gray-700"
+              >Product</label
+            >
+            <select
+              id="product-select"
+              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            >
+              <option value="butter-chicken" data-price="650.00">Butter Chicken</option>
+              <option value="naan" data-price="60.50">Garlic Naan</option>
+              <option value="icecream" data-price="399.75">Anjeer Icecream</option>
+            </select>
+          </div>
+
+          <div class="w-full md:w-1/4">
+            <label
+              for="quantity-select"
+              class="block text-sm font-medium text-gray-700"
+              >Quantity</label
+            >
+            <select
+              id="quantity-select"
+              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            >
+              <script>
+                for (let i = 1; i <= 10; i++) {
+                  document.write(`<option value="${i}">${i}</option>`);
+                }
+              </script>
+            </select>
+          </div>
+
+          <div class="w-full md:w-1/4">
+            <button
+              id="add-to-cart-btn"
+              class="mt-4 md:mt-0 w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-semibold mb-4">Your Cart</h2>
+        <div
+          id="cart-display"
+          class="bg-gray-50 rounded-lg p-4 min-h-[100px] space-y-4"
+        >
+          <p id="empty-cart-message" class="text-gray-500 text-center">
+            Your cart is empty.
+          </p>
+        </div>
+
+        <div
+          id="cart-summary"
+          class="hidden mt-4 pt-4 border-t border-gray-200"
+        >
+          <div class="flex justify-between items-center font-bold text-lg">
+            <span>Total:</span>
+            <span id="cart-total">0.00rs</span>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

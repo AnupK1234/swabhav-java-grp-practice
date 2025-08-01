@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guess the Number</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body
+    class="bg-blue-900 text-white flex items-center justify-center min-h-screen"
+  >
+    <div
+      class="bg-gray-800 p-8 rounded-lg shadow-lg text-center max-w-md w-full"
+    >
+      <h1 class="text-4xl mb-6 text-yellow-400 font-bold">GUESS THE NUMBER!</h1>
+      <p class="mb-4 text-xl">Between 1 to 100</p>
+
+      <div class="mb-6">
+        <p id="attempts-left" class="text-lg text-red-400">Attempts left: 5</p>
+      </div>
+
+      <div class="mb-6">
+        <input
+          type="number"
+          id="guess-input"
+          placeholder="Enter your guess"
+          class="w-full p-3 rounded bg-gray-700 text-white placeholder-gray-400 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 text-center"
+        />
+      </div>
+
+      <button
+        id="guess-button"
+        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out w-full"
+      >
+        Guess
+      </button>
+
+      <p id="message" class="mt-6 text-xl text-green-400"></p>
+
+      <div class="mt-6">
+        <h2 class="text-2xl mb-3 text-purple-400">Guessed Numbers:</h2>
+        <ul id="guessed-numbers-list" class="list-none p-0 text-lg"></ul>
+      </div>
+
+      <button
+        id="reset-button"
+        class="mt-8 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-5 rounded-lg transition duration-300 ease-in-out w-full hidden"
+      >
+        Play Again
+      </button>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Number (Circles)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen p-4">
+    <div class="bg-gray-800 p-8 rounded-lg shadow-lg text-center max-w-3xl w-full">
+        <h1 class="text-4xl mb-6 text-yellow-400">GUESS THE NUMBER!</h1>
+        <!-- <p class="mb-4 text-xl">I'm thinking of a number between 1 and 30.</p> -->
+
+        <div class="mb-6">
+            <p id="attempts-left" class="text-lg text-red-400">Attempts left: 5</p>
+        </div>
+
+        <div id="circles-container" class="grid grid-cols-5 md:grid-cols-6 lg:grid-cols-7 gap-4 justify-items-center mb-6">
+        </div>
+
+        <p id="message" class="mt-6 text-xl text-green-400 min-h-[2rem]"></p>
+
+        <div class="mt-6">
+            <h2 class="text-2xl mb-3 text-purple-400">Guessed Numbers:</h2>
+            <ul id="guessed-numbers-list" class="list-none p-0 text-lg flex flex-wrap justify-center gap-2">
+                <!-- li here -->
+            </ul>
+        </div>
+
+        <button id="reset-button"
+                class="mt-8 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out w-full hidden">
+            Play Again
+        </button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

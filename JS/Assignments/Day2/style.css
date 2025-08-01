@@ -1,0 +1,360 @@
+:root {
+  /* Light Mode Colors */
+  --background-color-light: #f4f7f6;
+  --text-color-light: #333;
+  --header-bg-light: #e0e6e3;
+  --section-bg-light: #ffffff;
+  --border-color-light: #e0e0e0;
+  --link-color-light: #007bff;
+  --toggle-bg-light: #eee;
+  --toggle-border-light: #ccc;
+  --toggle-icon-light: #555;
+}
+
+body.dark-mode {
+  /* Dark Mode Colors */
+  --background-color: #3b3b3b;
+  --text-color: #e0e0e0;
+  --header-bg: #4a4a4a;
+  --section-bg: #2c2c2c;
+  --border-color: #555;
+  --link-color: #8ab4f8;
+  --toggle-bg: #555;
+  --toggle-border: #777;
+  --toggle-icon: #f0f0f0;
+}
+
+body:not(.dark-mode) {
+  --background-color: var(--background-color-light);
+  --text-color: var(--text-color-light);
+  --header-bg: var(--header-bg-light);
+  --section-bg: var(--section-bg-light);
+  --border-color: var(--border-color-light);
+  --link-color: var(--link-color-light);
+  --toggle-bg: var(--toggle-bg-light);
+  --toggle-border: var(--toggle-border-light);
+  --toggle-icon: var(--toggle-icon-light);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  line-height: 1.6;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  padding: 20px;
+}
+
+.resume-container {
+  max-width: 900px;
+  margin: 20px auto;
+  background-color: var(--section-bg);
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  display: flex;
+  flex-direction: column; /* Always column for the main container */
+  gap: 25px;
+}
+
+/* Toggle Buttons */
+.toggle-buttons-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 1000;
+}
+
+.toggle-button {
+  background-color: var(--toggle-bg);
+  border: 1px solid var(--toggle-border);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2em;
+  color: var(--toggle-icon);
+}
+
+.toggle-button:hover {
+  filter: brightness(0.9);
+}
+
+/* Layout Toggle Icons */
+#layout-toggle .icon::before {
+  content: "I"; /* Single column icon */
+  font-size: 1.5em;
+}
+
+.resume-container.two-column
+  .toggle-buttons-container
+  #layout-toggle
+  .icon::before {
+  content: "II"; /* Double column icon */
+}
+
+/* Header */
+.resume-header {
+  text-align: center;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.resume-header h1 {
+  font-size: 2.8em;
+  color: var(--text-color);
+  margin-bottom: 5px;
+}
+
+/* Resume Content - Handles column layout */
+.resume-content {
+  display: flex;
+  flex-direction: column; /* Default to single column */
+  gap: 25px;
+}
+
+.resume-container.two-column .resume-content {
+  flex-direction: row; /* Change to row for two columns */
+  flex-wrap: wrap; /* Allow wrapping if content is too wide */
+  gap: 30px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.left-column {
+  flex: 1; /* Allow to grow */
+  min-width: 280px; /* Minimum width for the left column in two-column layout */
+}
+
+.right-column {
+  flex: 1; /* Allow to grow more than left */
+}
+
+/* Sections */
+section {
+  padding: 0; /* Sections don't need padding-bottom if gap is handled by parent */
+}
+
+section h2 {
+  font-size: 1.8em;
+  color: var(--text-color);
+  margin-bottom: 15px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 5px;
+}
+
+section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+section ul li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+/* Contact Info */
+.contact-info ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px 30px;
+}
+
+.resume-container.two-column .contact-info ul {
+  flex-direction: column; /* Stack contact info vertically in two-column layout */
+  gap: 8px;
+}
+
+.contact-info li {
+  white-space: nowrap;
+}
+
+/* Education */
+.education-item {
+  margin-bottom: 15px; /* Keep some margin for items within the education section */
+  background-color: var(--header-bg);
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.education-item h3 {
+  font-size: 1.3em;
+  margin-bottom: 5px;
+  color: var(--text-color);
+}
+
+.education-item p {
+  font-size: 0.95em;
+  color: var(--text-color);
+}
+
+/* Projects */
+.project-item {
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px dashed var(--border-color);
+}
+
+.project-item:last-child {
+  border-bottom: none;
+}
+
+.project-item h3 {
+  font-size: 1.4em;
+  margin-bottom: 5px;
+  color: var(--text-color);
+}
+
+.project-item .tech-stack {
+  font-size: 0.9em;
+  color: #777;
+}
+body.dark-mode .project-item .tech-stack {
+  color: #a0a0a0;
+}
+
+.project-duration,
+.internship-duration {
+  font-size: 0.9em;
+  color: #666;
+  margin-bottom: 10px;
+}
+body.dark-mode .project-duration,
+body.dark-mode .internship-duration {
+  color: #b0b0b0;
+}
+
+.project-description,
+.internship-description {
+  margin-bottom: 10px;
+}
+
+.project-item ul {
+  list-style: disc;
+  margin-left: 20px;
+}
+
+.project-item ul li {
+  margin-bottom: 5px;
+}
+
+.demo-link,
+.certificate-link {
+  color: var(--link-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.demo-link:hover,
+.certificate-link:hover {
+  text-decoration: underline;
+}
+
+/* Skills */
+.skills ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.skills ul li {
+  background-color: var(--header-bg);
+  padding: 10px 15px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.resume-container.two-column .skills ul {
+  flex-direction: column; /* Stack skills in one column in the left sidebar */
+  gap: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .resume-container {
+    padding: 20px;
+  }
+
+  .resume-container.two-column .resume-content {
+    flex-direction: column; /* Collapse to single column on smaller screens */
+    gap: 25px;
+  }
+
+  .resume-header h1 {
+    font-size: 2em;
+  }
+
+  section h2 {
+    font-size: 1.5em;
+  }
+
+  .toggle-buttons-container {
+    top: 10px;
+    right: 10px;
+    gap: 5px;
+  }
+
+  .toggle-button {
+    width: 35px;
+    height: 35px;
+    font-size: 1em;
+  }
+
+  #layout-toggle .icon::before {
+    font-size: 1.2em;
+  }
+
+  .resume-container.two-column
+    .toggle-buttons-container
+    #layout-toggle
+    .icon::before {
+    font-size: 1.2em;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+
+  .resume-container {
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .resume-header h1 {
+    font-size: 1.8em;
+  }
+
+  section h2 {
+    font-size: 1.3em;
+  }
+
+  .contact-info ul {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .education-item h3,
+  .project-item h3 {
+    font-size: 1.1em;
+  }
+
+  .project-item .tech-stack {
+    display: block;
+  }
+}

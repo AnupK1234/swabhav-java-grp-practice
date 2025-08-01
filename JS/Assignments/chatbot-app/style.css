@@ -1,0 +1,11 @@
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #0c0a09;
+}
+.overflow-y-auto::-webkit-scrollbar {
+  display: none;
+}
+.overflow-y-auto {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
