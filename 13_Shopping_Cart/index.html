@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shopping Cart</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="wrapper">
+    <div class="card">
+      <h1>🛒 Shopping Cart</h1>
+
+      <div class="form">
+        <div class="form-group">
+          <label for="product">Select Product</label>
+          <select id="product">
+            <option value="" disabled selected>Select</option>
+            <option value="TV" data-price="30000">TV – ₹30,000</option>
+            <option value="Fridge" data-price="25000">Fridge – ₹25,000</option>
+            <option value="AC" data-price="40000">AC – ₹40,000</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="quantity">Quantity</label>
+          <input type="number" id="quantity" placeholder="e.g. 1" min="1" />
+        </div>
+
+        <button id="addBtn">➕ Add to Cart</button>
+      </div>
+
+      <table id="cartTable">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Unit Price</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
