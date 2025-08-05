@@ -2,7 +2,15 @@ const emojis = ["🏠", "🚗", "🐶", "🍎", "🚀", "🎈", "🐱", "📚", 
 let cards = [...emojis, ...emojis]; // 10 pairs
 
 // Shuffle cards
-cards.sort(() => Math.random() - 0.5);
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+shuffle(cards);
+
 
 const gameBoard = document.getElementById("game-board");
 const statusText = document.getElementById("status");
