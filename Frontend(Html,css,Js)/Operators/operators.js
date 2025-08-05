@@ -40,6 +40,35 @@
 // //String Operators
 // let str = "Hello, " + "World!";  // "Hello, World!"
 
+//IIFE(Immediately invoke function expression)
+// const counter = (function(){
+//     let count =0;
+//     return{ increment:function(){
+//         count ++;
+//         console.log("Count: "+count);
+//     },
+//     reset:function(){
+//         count =0;
+//         console.log("Count: "+count)
+//     }
+// };
+// })();
+// counter.increment();
+// counter.increment();
+// counter.increment();
+// counter.reset();
+
+//Regex
+//Match if a string contains digits
+let regex = /\d/;
+console.log(regex.test("Hello123"));
+let input = prompt("Enter the Password")
+let password=/^(?=.*[!@#$%^&*()_+\-=\]])(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+if(regex.test(input)){
+    alert(`Password is strong`);
+}else{
+    alert(`Password is weak`)
+}
 
 
 
