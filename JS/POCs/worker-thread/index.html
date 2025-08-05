@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Thread PoC (Node.js)</title>
+</head>
+<body>
+
+    <h1>Node.js Worker Thread Proof of Concept</h1>
+    <p>This page demonstrates a heavy calculation running on a Node.js server using a worker thread.</p>
+    <p>Try typing in the box while the calculation is running to see that the UI doesn't freeze.</p>
+
+    <label for="input-box">Type here:</label>
+    <input type="text" id="input-box" placeholder="Start typing...">
+
+    <br><br>
+
+    <button id="calculate-button">Start Heavy Calculation on Server</button>
+
+    <br><br>
+
+    <p>Result: <span id="result">Waiting...</span></p>
+
+    <script>
+        document.getElementById('calculate-button').addEventListener('click', () => {
+            document.getElementById('result').textContent = 'Calculating on server...';
+            console.log('Client: Sending request to server.');
+
+            // Make an HTTP request to the server's endpoint
+            fetch('http://localhost:3000/heavy-calculation')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('result').textContent = data;
+                    console.log('Client: Received result from server.');
+                })
+                .catch(error => {
+                    document.getElementById('result').textContent = 'Error occurred!';
+                    console.error('Client: Error fetching from server:', error);
+                });
+        });
+    </script>
+</body>
+</html>

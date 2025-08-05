@@ -1,4 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const products = [
+    { id: "butter-chicken", name: "Butter Chicken", price: 650.0 },
+    { id: "naan", name: "Garlic Naan", price: 60.5 },
+    { id: "icecream", name: "Anjeer Icecream", price: 399.75 },
+    { id: "biryani", name: "Chicken Biryani", price: 450.0 },
+    { id: "kebab", name: "Seekh Kebab", price: 520.0 },
+  ];
+
   const productSelect = document.getElementById("product-select");
   const quantitySelect = document.getElementById("quantity-select");
   const addToCartBtn = document.getElementById("add-to-cart-btn");
@@ -8,6 +16,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const cartTotalElement = document.getElementById("cart-total");
 
   let cart = [];
+
+  const populateProductDropdown = () => {
+    productSelect.innerHTML = "";
+    products.forEach((product) => {
+      const option = document.createElement("option");
+      option.value = product.id;
+      option.textContent = product.name;
+      option.dataset.price = product.price;
+      productSelect.appendChild(option);
+    });
+  };
 
   const formatCurrency = (amount) => `₹${amount.toFixed(2)}`;
 
@@ -19,7 +38,10 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    emptyCartMessage.remove();
+    if (document.body.contains(emptyCartMessage)) {
+      emptyCartMessage.remove();
+    }
+
     cartSummary.classList.remove("hidden");
 
     let totalCartPrice = 0;
@@ -41,30 +63,30 @@ document.addEventListener("DOMContentLoaded", () => {
       cartItemDiv.dataset.index = index;
 
       cartItemDiv.innerHTML = `
-                        <div class="flex-grow">
-                            <h3 class="text-lg font-medium">${item.name}</h3>
-                            <p class="text-sm text-gray-500">Unit Price: ${formatCurrency(
-                              item.price
-                            )}</p>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <div class="flex items-center space-x-1">
-                                <button class="quantity-btn decrement bg-gray-200 text-gray-700 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">-</button>
-                                <span class="text-lg font-semibold w-6 text-center">${
-                                  item.quantity
-                                }</span>
-                                <button class="quantity-btn increment bg-gray-200 text-gray-700 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">+</button>
-                            </div>
-                            <span class="text-lg font-semibold w-24 text-right">${formatCurrency(
-                              lineItemTotal
-                            )}</span>
-                            <button class="remove-item-btn ml-4 text-red-500 hover:text-red-700 transition-colors duration-200" aria-label="Remove item">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.728-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                        </div>
-                    `;
+        <div class="flex-grow">
+          <h3 class="text-lg font-medium">${item.name}</h3>
+          <p class="text-sm text-gray-500">Unit Price: ${formatCurrency(
+            item.price
+          )}</p>
+        </div>
+        <div class="flex items-center space-x-2">
+          <div class="flex items-center space-x-1">
+            <button class="quantity-btn decrement bg-gray-200 text-gray-700 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">-</button>
+            <span class="text-lg font-semibold w-6 text-center">${
+              item.quantity
+            }</span>
+            <button class="quantity-btn increment bg-gray-200 text-gray-700 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">+</button>
+          </div>
+          <span class="text-lg font-semibold w-24 text-right">${formatCurrency(
+            lineItemTotal
+          )}</span>
+          <button class="remove-item-btn ml-4 text-red-500 hover:text-red-700 transition-colors duration-200" aria-label="Remove item">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.728-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+            </svg>
+          </button>
+        </div>
+      `;
       cartDisplay.appendChild(cartItemDiv);
     });
 
@@ -124,6 +146,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Initial render
+  populateProductDropdown();
   updateCartDisplay();
 });

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Worker PoC</title>
+</head>
+<body>
+
+    <h1>Web Worker Proof of Concept</h1>
+    <p>This page will demonstrate a long-running task being offloaded to a web worker.</p>
+    <p>Try typing in the box while the calculation is running to see that the UI doesn't freeze.</p>
+
+    <label for="input-box">Type here:</label>
+    <input type="text" id="input-box" placeholder="Start typing...">
+
+    <br><br>
+
+    <button id="calculate-button">Start Heavy Calculation</button>
+
+    <br><br>
+
+    <p>Result: <span id="result">Waiting...</span></p>
+
+    <script src="with-worker.js"></script>
+</body>
+</html>
