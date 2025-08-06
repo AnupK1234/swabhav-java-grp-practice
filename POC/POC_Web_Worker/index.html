@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Web Worker + Live Table Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    input, button {
+    margin-top: 20px;
+      padding: 10px;
+      font-size: 16px;
+      margin-right: 10px;
+    }
+    table {
+      margin-top: 20px;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid #999;
+      padding: 10px;
+      text-align: left;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Web Worker </h2>
+
+  <input type="text" id="textInput" placeholder="Enter something..." />
+  <button id="addBtn">Add to Table</button>
+  
+
+  <table id="dataTable">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>User Input</th>
+      </tr>
+    </thead>
+    <tbody>
+     
+    </tbody>
+  </table>
+<button id="startBtn">Start Heavy Counting Task</button>
+  <p id="result">Result will appear here.</p>
+
+  <script src="script.js"></script>
+   <!-- <script src="withoutworker.js"></script> -->
+</body>
+</html>
