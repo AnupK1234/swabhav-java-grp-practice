@@ -1,0 +1,41 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Student Form Page</title>
+</head>
+<body>
+	<div>STUDENT FORM</div>
+	<form action="show-data.jsp" method="GET">
+		<label for="username">Name: </label> <input name="username"
+			type="text" /> <br /> <label for="email">Email: </label> <input
+			name="email" type="email" /> <br />
+
+		<div>
+			<select name="select1">
+				<option>Science</option>
+				<option>Commerce</option>
+			</select>
+		</div>
+
+		<div>
+			<input type="radio" id="male" name="gender" value="male"> <label
+				for="male">Male</label><br> <input type="radio" id="female"
+				name="gender" value="female"> <label for="female">Female</label><br>
+		</div>
+
+		<div>
+			<input type="checkbox" id="dsa" name="dsa" value="Dsa">
+			<label for="dsa">DSA</label><br> 
+			<input type="checkbox" id="vehicle2" name="vehicle2" value="Car"> 
+			<label for="vehicle2"> OS</label><br> 
+			<input type="checkbox" id="vehicle3" name="vehicle3" value="Boat"> 
+			<label for="vehicle3"> DBMS</label><br>
+		</div>
+
+		<button type="submit">Submit</button>
+	</form>
+</body>
+</html>

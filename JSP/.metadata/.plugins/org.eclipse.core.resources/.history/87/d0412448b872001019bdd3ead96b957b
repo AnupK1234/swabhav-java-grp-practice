@@ -1,0 +1,29 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Student Form Page</title>
+</head>
+<body>
+	<div>STUDENT FORM</div>
+	<form action="show-data.jsp" method="GET">
+		<label for="username">Name: </label> 
+		<input name="username" type="text" /> 
+			<br /> 
+			<label for="email">Email: </label> 
+			<input name="password" type="email" /> 
+			<br />
+			
+			<div>
+			<select name>
+				<option>DATA1</option>
+				<option>DATA2</option>
+			</select>
+			</div>
+		
+		<button type="submit">Submit</button>
+	</form>
+</body>
+</html>

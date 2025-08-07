@@ -1,0 +1,36 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>STUDENT DATA</title>
+</head>
+<body>
+	<h1>
+		Name:
+		<%=request.getParameter("username")%></h1>
+	<h1>
+		Email:
+		<%=request.getParameter("email")%></h1>
+	<h1>
+		Stream:
+		<%=request.getParameter("select1")%></h1>
+	<h1>
+		Gender:
+		<%=request.getParameter("gender")%></h1>
+
+	<h1>Vehicles available:</h1>
+	<div>
+		<%= String subjects = request.getParameterValues("dsa") %>
+		<%=request.getParameter("vehicle1")%>
+	</div>
+	<div>
+		<%=request.getParameter("vehicle2")%>
+	</div>
+	<div>
+		<%=request.getParameter("vehicle3")%>
+	</div>
+
+</body>
+</html>
