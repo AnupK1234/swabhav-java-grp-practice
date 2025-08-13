@@ -1,0 +1,18 @@
+// SessionServlet.java
+package com.example;
+
+import java.io.IOException;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class SessionServlet extends HttpServlet {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		response.setContentType("text/html");
+
+		HttpSession session = request.getSession(); // Create or get existing session
+		session.setAttribute("username", "Anup"); // Store data
+
+		response.getWriter().println("<h3>Session set: username = Anup</h3>");
+		response.getWriter().println("<a href='GetSessionServlet'>Get Session Data</a>");
+	}
+}

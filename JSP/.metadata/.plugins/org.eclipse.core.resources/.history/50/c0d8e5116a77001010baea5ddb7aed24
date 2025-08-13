@@ -1,0 +1,42 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="java.util.*,com.aurionpro.Student"%>
+
+<%
+// just create some sample data ... normally provided by MVC
+List<Student> data = new ArrayList<>();
+data.add(new Student("John", "Doe", 100, true));
+data.add(new Student("Maxwell", "Johnson", 25, false));
+data.add(new Student("Mary", "Public", 13, false));
+data.add(new Student("Anup", "Khismatrao", 63, true));
+pageContext.setAttribute("myStudents", data);
+%>
+<html>
+
+<body>
+	<table border="1">
+		<tr>
+			<th>First Name</th>
+			<th>Last Name</th>
+			<th>Marks</th>
+			<th>Passed/Fail</th>
+		</tr>
+
+		<c:forEach var="tempStudent" items="${myStudents}">
+			<tr>
+				<td>${tempStudent.getFirstName()}</td>
+				<td>${tempStudent.lastName}</td>
+				<td>${tempStudent.marks}</td>
+				<td><c:if test="${tempStudent.isPassedCheck() == true}">
+					Passed
+				</c:if> <c:if test="${tempStudent.isPassedCheck() == false}">
+					Fail
+				</c:if></td>
+			</tr>
+
+		</c:forEach>
+		
+		<c:choose>
+			<c:when test="${tempStudent.isPassedCheck}"></c:when>
+		</c:choose>
+	</table>
+</body>
