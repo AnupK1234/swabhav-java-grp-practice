@@ -32,8 +32,8 @@ public class GetStateServlet extends HttpServlet {
         response.getWriter().println("<ul>");
         response.getWriter().println("<li><strong>Session Name:</strong> " + sessionName + "</li>");
         response.getWriter().println("<li><strong>Application Message:</strong> " + appMessage + "</li>");
-        response.getWriter().println("<li><strong>Page Note:</strong> null (Different request)</li>");
-        response.getWriter().println("<li><strong>Request Note:</strong> null (Not forwarded)</li>");
+       // response.getWriter().println("<li><strong>Page Note:</strong> null (Different request)</li>");
+       // response.getWriter().println("<li><strong>Request Note:</strong> null (Not forwarded)</li>");
         response.getWriter().println("<li><strong>Cookie Name:</strong> " + cookieName + "</li>");
         response.getWriter().println("</ul>");
     }
