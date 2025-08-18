@@ -11,6 +11,11 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/RedirectServlet")
 public class RedirectServlet extends HttpServlet{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	protected void service(HttpServletRequest arg0, HttpServletResponse arg1) throws ServletException, IOException {
 		PrintWriter pw = arg1.getWriter();

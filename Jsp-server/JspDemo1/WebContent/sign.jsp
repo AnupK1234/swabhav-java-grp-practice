@@ -1,4 +1,6 @@
 <%@page import="javax.swing.plaf.metal.MetalBorders.Flush3DBorder"%>
+<%@ include file="/WEB-INF/auth.jsp" %>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>

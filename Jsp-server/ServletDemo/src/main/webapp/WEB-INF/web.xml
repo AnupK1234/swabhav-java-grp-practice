@@ -1,5 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://jakarta.ee/xml/ns/jakartaee" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0">
   <display-name>ServletDemo</display-name>
-  
+  <servlet>
+    <description></description>
+    <display-name>Demo</display-name>
+    <servlet-name>Demo</servlet-name>
+    <servlet-class>com.aurionpro.model.Demo</servlet-class>
+  </servlet>
+  <context-param>
+  <param-name>Hello</param-name>
+  <param-value>Everything is good</param-value>
+  </context-param>
+  <context-param>
+  <param-name>Buddy</param-name>
+  <param-value>Friends</param-value>
+  </context-param>
+  <servlet-mapping>
+    <servlet-name>Demo</servlet-name>
+    <url-pattern>/Demo</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ParamTest</display-name>
+    <servlet-name>ParamTest</servlet-name>
+    <servlet-class>com.aurionpro.model.ParamTest</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ParamTest</servlet-name>
+    <url-pattern>/ParamTest</url-pattern>
+  </servlet-mapping>
 </web-app>
