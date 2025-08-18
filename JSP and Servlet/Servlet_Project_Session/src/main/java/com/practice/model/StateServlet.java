@@ -29,10 +29,10 @@ public class StateServlet extends HttpServlet {
 		getServletContext().setAttribute("appMessage", "Welcome All Users!");
 		
 		//Page Scope
-		request.setAttribute("pageNote", "Note: Shown only on this page.");
+		//request.setAttribute("pageNote", "Note: Shown only on this page.");
 		
 		//Request Scope
-		 request.setAttribute("requestNote", "This is a request-scoped value.");
+		 //request.setAttribute("requestNote", "This is a request-scoped value.");
 		 
 		 //Cookie
 		 Cookie userCookie= new Cookie("cookieName",name);
