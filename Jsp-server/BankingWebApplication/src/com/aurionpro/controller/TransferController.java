@@ -73,5 +73,12 @@ public class TransferController extends HttpServlet {
 			throw new ServletException("Database error during transfer", e);
 		}
 	}
+	
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	        throws ServletException, IOException {
+	    request.getRequestDispatcher("/WEB-INF/views/customer-dashboard.jsp").forward(request, response);
+	}
+
 
 }

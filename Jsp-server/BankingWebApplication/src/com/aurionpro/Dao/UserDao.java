@@ -20,6 +20,9 @@ public class UserDao {
 	public UserDao(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
+	public UserDao()
+	{
+	}
 
 	// Get user by username
 	public User getUserByUserName(String username) throws SQLException {
@@ -49,14 +52,29 @@ public class UserDao {
 		}
 		return null;
 	}
-	// List only customer 
+
+	public User getUserById(int id) throws SQLException {
+		String sql = "Select * from users where id=?";
+		try (Connection con = dataSource.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+			ps.setLong(1, id);
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return mapRowToUser(rs);
+				}
+			}
+		}
+		return null;
+	}
+
+	// List only customer
 	public List<User> getCustomer(Role role) throws SQLException {
 		List<User> customers = new ArrayList<>();
 		String sql = "SELECT * FROM users WHERE role = ?";
 
 		try (Connection con = dataSource.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-			ps.setString(1, role.name()); 
+			ps.setString(1, role.name());
 
 			try (ResultSet rs = ps.executeQuery()) {
 				while (rs.next()) {
@@ -84,7 +102,7 @@ public class UserDao {
 			ps.setString(7, user.getRole().name());
 			ps.executeUpdate();
 			int rowsAffected = ps.executeUpdate();
-			if(rowsAffected >0) {
+			if (rowsAffected > 0) {
 				return true;
 			}
 			return false;
@@ -141,6 +159,18 @@ public class UserDao {
 		Role role = Role.valueOf(rs.getString("role").toUpperCase());
 
 		return new User(firstName, userName, lastName, balance, accountNo, id, password, role);
+	}
+
+	public boolean updateUserPassword(int userId, String hashedNewPassword) throws SQLException {
+		String sql = "update users set password =? where id=?";
+		try (Connection con = dataSource.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, hashedNewPassword);
+			ps.setInt(2, userId);
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 }

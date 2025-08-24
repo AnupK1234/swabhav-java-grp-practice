@@ -21,6 +21,10 @@ public class TransactionDao {
 		this.dataSource = dataSource;
 	}
 
+	public TransactionDao() {
+		// TODO Auto-generated constructor stub
+	}
+
 	// Create a transaction
 	public void createTransaction(Transaction transaction) throws SQLException {
 		String sql = "INSERT INTO transactions (accountNo, type, amount, transaction_date, description, balance_after_transaction) VALUES (?, ?, ?, ?, ?, ?)";
@@ -46,6 +50,20 @@ public class TransactionDao {
 
 			ps.setLong(1, accountNo);
 
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					transactions.add(mapRowToTransaction(rs));
+				}
+			}
+		}
+		return transactions;
+	}
+
+	public List<Transaction> getAllTransaction() throws SQLException {
+		String sql = "SELECT * FROM  transactions ORDER BY transaction_date DESC";
+		List<Transaction> transactions = new ArrayList<>();
+
+		try (Connection con = dataSource.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			try (ResultSet rs = ps.executeQuery()) {
 				while (rs.next()) {
 					transactions.add(mapRowToTransaction(rs));

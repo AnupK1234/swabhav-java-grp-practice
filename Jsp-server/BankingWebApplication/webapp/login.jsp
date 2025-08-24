@@ -26,9 +26,9 @@
 
             <!-- Error Message Display -->
             <!-- This block will only be displayed if the controller sends an errorMessage -->
-            <c:if test="${not empty errorMessage}">
+            <c:if test="${not empty error}">
                 <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md relative mb-6" role="alert">
-                    <span class="block sm:inline">${errorMessage}</span>
+                    <span class="block sm:inline">${error}</span>
                 </div>
             </c:if>
 

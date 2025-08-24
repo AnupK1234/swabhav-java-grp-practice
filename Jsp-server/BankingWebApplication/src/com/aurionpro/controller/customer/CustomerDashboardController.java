@@ -1,4 +1,4 @@
-package com.aurionpro.controller;
+package com.aurionpro.controller.customer;
 
 import java.io.IOException;
 import java.sql.SQLException;
