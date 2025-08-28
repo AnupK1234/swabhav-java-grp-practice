@@ -51,14 +51,14 @@ public class TransactionService {
 
 		if (senderUpdateSuccess && receiverUpdateSuccess) {
 			// Create a debit record for the sender
-			Transaction senderTransaction = new Transaction(senderAccontNo, senderBalance, TransactionType.Debit,
+			Transaction senderTransaction = new Transaction(senderAccontNo, senderBalance, TransactionType.DEBIT,
 					amount, LocalDateTime.now(),
 					"Transfer to " + receiver.getFirstName() + " " + receiver.getLastName());
 			transactionDao.createTransaction(senderTransaction);
 
 			// Create a credit record for the receiver
 			Transaction receiverTransaction = new Transaction(receiverAccountNo, receiverBalance,
-					TransactionType.Credit, amount, LocalDateTime.now(),
+					TransactionType.CREDIT, amount, LocalDateTime.now(),
 					"Transfer from " + sender.getFirstName() + " " + sender.getLastName());
 			transactionDao.createTransaction(receiverTransaction);
 

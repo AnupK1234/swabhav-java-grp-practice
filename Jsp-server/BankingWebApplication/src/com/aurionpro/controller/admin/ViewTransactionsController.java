@@ -18,45 +18,47 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * Servlet controller for the Admin to view all transactions.
- */
 @WebServlet("/admin/transactions")
 public class ViewTransactionsController extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-    private AdminService adminService;
+	private static final long serialVersionUID = 1L;
+	private AdminService adminService;
 
-    @Override
-    public void init() {
-    	UserDao userDao = (UserDao) getServletContext().getAttribute("userDao");
+	@Override
+	public void init() {
+		UserDao userDao = (UserDao) getServletContext().getAttribute("userDao");
 		TransactionDao transactionDao = (TransactionDao) getServletContext().getAttribute("transactionDao");
-        this.adminService = new AdminService(userDao, transactionDao);
-    }
+		this.adminService = new AdminService(userDao, transactionDao);
+	}
 
-    /**
-     * Handles GET requests to the view all transactions page.
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
 
-        // --- SECURITY CHECK ---
-        if (session == null || session.getAttribute("user") == null || ((User) session.getAttribute("user")).getRole() != Role.ADMIN) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "You do not have permission to access this page.");
-            return;
-        }
+		if (session == null || session.getAttribute("user") == null
+				|| ((User) session.getAttribute("user")).getRole() != Role.ADMIN) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied.");
+			return;
+		}
 
-        try {
-            // --- DATA FETCHING ---
-            // Use the AdminService to get the list of all transactions
-            List<Transaction> transactionList = adminService.getAllTransaction();
+		try {
+			String sortField = request.getParameter("sortField");
+			String sortOrder = request.getParameter("sortOrder");
+			String filterAccountNo = request.getParameter("filterAccountNo");
 
-            // --- FORWARD TO VIEW ---
-            request.setAttribute("transactionList", transactionList);
-            request.getRequestDispatcher("/WEB-INF/admin/view_transactions.jsp").forward(request, response);
+			List<Transaction> transactionList = adminService.getAllTransactions(sortField, sortOrder, filterAccountNo);
 
-        } catch (SQLException e) {
-            throw new ServletException("Database error while fetching all transactions.", e);
-        }
-    }
+			// --- Set attributes for the JSP ---
+			request.setAttribute("transactionList", transactionList);
+			request.setAttribute("sortField", sortField);
+			request.setAttribute("sortOrder", sortOrder);
+			request.setAttribute("filterAccountNo", filterAccountNo);
+			request.setAttribute("activePage", "transactions");
+
+			request.getRequestDispatcher("/admin/view_transaction.jsp").forward(request, response);
+
+		} catch (SQLException e) {
+			throw new ServletException("Database error while fetching transactions.", e);
+		}
+	}
 }

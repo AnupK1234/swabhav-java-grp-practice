@@ -10,6 +10,15 @@ public class User {
 	private int accountNo;
 	private Role role;
 	private String password;
+	private boolean forcePasswordChange;
+
+	public boolean isForcePasswordChange() {
+		return forcePasswordChange;
+	}
+
+	public void setForcePasswordChange(boolean forcePasswordChange) {
+		this.forcePasswordChange = forcePasswordChange;
+	}
 
 	public String getUserName() {
 		return userName;
@@ -74,36 +83,44 @@ public class User {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+    public User() {
+    }
 
-	public User(String firstName, String username, String lastName, double balance, int accountNo, int id,
-			String password, Role role) {
+
+	public User(int id, String userName, String firstName, String lastName, double balance, int accountNo, Role role,
+			String password, boolean forcePasswordChange) {
+		super();
+		this.id = id;
+		this.userName = userName;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.balance = balance;
 		this.accountNo = accountNo;
-		this.id = id;
-		this.password = password;
 		this.role = role;
-		this.userName = username;
+		this.password = password;
+		this.forcePasswordChange = forcePasswordChange;
 	}
 
-	public User(String firstName, String userName, String lastName, double balance, int accountNo, String password,
-			Role role) {
+	public User(String userName, String firstName, String lastName, double balance, int accountNo, Role role,
+			String password, boolean forcePasswordChange) {
+		super();
+		this.userName = userName;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.balance = balance;
 		this.accountNo = accountNo;
-		this.password = password;
 		this.role = role;
-		this.userName = userName;
+		this.password = password;
+		this.forcePasswordChange = forcePasswordChange;
 
 	}
 
 	@Override
 	public String toString() {
-		return "User [userName=" + userName + ", firstName=" + firstName + ", lastName=" + lastName + ", balance="
-				+ balance + ", accountNo=" + accountNo + ", id=" + id + ", role=" + role + ", password=" + password
-				+ "]";
+		return "User [id=" + id + ", userName=" + userName + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", balance=" + balance + ", accountNo=" + accountNo + ", role=" + role + ", password=" + password
+				+ ", forcePasswordChange=" + forcePasswordChange + "]";
 	}
 
 }

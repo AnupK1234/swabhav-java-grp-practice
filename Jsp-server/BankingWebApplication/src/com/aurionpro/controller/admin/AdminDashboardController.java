@@ -16,19 +16,14 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * Servlet controller for the Admin Dashboard.
- * Handles displaying all customer accounts.
- */
-@WebServlet("/admin/dashboard")
+@WebServlet("/admin/AdminDashboard")
 public class AdminDashboardController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private AdminService adminService;
 
     @Override
     public void init() {
-        // This assumes you have a way to get a UserDao instance.
-        // For simplicity, we'll create one here. In a larger app, you'd use a more robust method.
+        
         UserDao userDao = (UserDao) getServletContext().getAttribute("userDao");
         this.adminService = new AdminService(userDao);
     }
@@ -41,24 +36,20 @@ public class AdminDashboardController extends HttpServlet {
         // 1. Is there a logged-in user?
         // 2. Is that user an ADMIN?
         if (session == null || session.getAttribute("user") == null || ((User) session.getAttribute("user")).getRole() != Role.ADMIN) {
-            // If not, send an "Access Denied" error or redirect to login
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "You do not have permission to access this page.");
             return;
         }
         try {
-            // --- DATA FETCHING ---
-            // Use the AdminService to get the list of all customers
             List<User> customerList = adminService.getAllCustomer();
 
-            // --- FORWARD TO VIEW ---
             // Set the customer list as an attribute so the JSP can access it
             request.setAttribute("customerList", customerList);
+            request.setAttribute("activePage", "customers");
 
             // Forward the request to the JSP page for display
-            request.getRequestDispatcher("/WEB-INF/admin/dashboard.jsp").forward(request, response);
+            request.getRequestDispatcher("/admin/adminDashboard.jsp").forward(request, response);
 
         } catch (SQLException e) {
-            // Handle potential database errors
             throw new ServletException("Database error while fetching customers for admin dashboard.", e);
         }
     }

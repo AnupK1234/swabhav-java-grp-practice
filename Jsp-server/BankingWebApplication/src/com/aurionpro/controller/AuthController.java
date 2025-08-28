@@ -1,14 +1,18 @@
 package com.aurionpro.controller;
 
+import java.io.IOException;
+
+import com.aurionpro.Dao.UserDao;
+import com.aurionpro.model.Role;
 import com.aurionpro.model.User;
 import com.aurionpro.service.AuthService;
-import com.aurionpro.Dao.UserDao;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
-
-import java.io.IOException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/login")
 public class AuthController extends HttpServlet {
@@ -36,7 +40,17 @@ public class AuthController extends HttpServlet {
 				session.setAttribute("user", user);
 				session.setMaxInactiveInterval(5 * 60);
 
-				response.sendRedirect("home.jsp");
+				// Redirect based on role
+				if (user.getRole() == Role.ADMIN) {
+					response.sendRedirect(request.getContextPath() + "/admin/AdminDashboard");
+				} else if (user.getRole() == Role.CUSTOMER) {
+					if (user.isForcePasswordChange()) {
+						response.sendRedirect(request.getContextPath() + "/customer/change-password?force=true");
+					} else {
+						response.sendRedirect(request.getContextPath() + "/customer/dashboard");
+					}
+
+				}
 			} else {
 				request.setAttribute("error", "Invalid credentials!");
 				request.getRequestDispatcher("/login.jsp").forward(request, response);

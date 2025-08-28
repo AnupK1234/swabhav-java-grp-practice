@@ -9,9 +9,9 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import com.aurionpro.misc.PasswordHasher;
 import com.aurionpro.model.Role;
 import com.aurionpro.model.User;
-import com.bank.misc.PasswordHasher;
 
 public class UserDao {
 

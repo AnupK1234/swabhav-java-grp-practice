@@ -1,8 +1,8 @@
 package com.aurionpro.service;
 
 import com.aurionpro.Dao.UserDao;
+import com.aurionpro.misc.PasswordHasher;
 import com.aurionpro.model.User;
-import com.bank.misc.PasswordHasher;
 
 public class AuthService {
     private final UserDao userDao;
@@ -20,11 +20,10 @@ public class AuthService {
             return null; // no such user
         }
 
-        String hashedInput = hasher.hashPassword(password);
-
-        if (hashedInput.equals(userFromDb.getPassword())) {
-            return userFromDb; // valid user
+        if (hasher.verifyPassword(password, userFromDb.getPassword())) {
+            return userFromDb;
         }
+
 
         return null; // wrong password
     }

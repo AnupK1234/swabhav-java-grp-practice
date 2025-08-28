@@ -5,10 +5,10 @@ import java.util.List;
 
 import com.aurionpro.Dao.TransactionDao;
 import com.aurionpro.Dao.UserDao;
+import com.aurionpro.misc.PasswordHasher;
 import com.aurionpro.model.Role;
 import com.aurionpro.model.Transaction;
 import com.aurionpro.model.User;
-import com.bank.misc.PasswordHasher;
 
 public class AdminService {
 
@@ -24,31 +24,51 @@ public class AdminService {
 		this.userDao = userDao;
 	}
 
+	// Get all customers
 	public List<User> getAllCustomer() throws SQLException {
 		return userDao.getCustomer(Role.CUSTOMER);
 	}
 
-	public boolean createUser(String username, String plainPassword, String firstName, String lastName,
-			int accountNumber, double balance) throws SQLException {
+	// Create a new customer
+	public String createUser(String username, String plainPassword, String firstName, String lastName,
+			int accountNumber, double balance,Role role) throws SQLException {
+
 		// 1. Validate password strength
 		String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
 		if (!plainPassword.matches(passwordPattern)) {
-			throw new IllegalArgumentException("Password must be at least 8 characters long, "
-					+ "contain one uppercase, one lowercase, one number, and one special character.");
+			// Return a user-friendly error message instead of throwing an exception
+			return "Error: Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.";
 		}
-		// 1. Hash the password before saving
-		PasswordHasher hasher = new PasswordHasher();
-		String hashedPassword = hasher.hashPassword(plainPassword);
 
-		// 2. Create a new User object
-		User newUser = new User(firstName, username, lastName, balance, accountNumber, hashedPassword, Role.CUSTOMER);
+		// 2. Hash the password here in the service layer
+		String hashedPassword = new PasswordHasher().hashPassword(plainPassword);
 
-		return userDao.addUser(newUser);
+		// 3. Create a new User object using setters for clarity
+		User newUser = new User();
+		newUser.setUserName(username);
+		newUser.setFirstName(firstName);
+		newUser.setLastName(lastName);
+		newUser.setAccountNo(accountNumber);
+		newUser.setBalance(balance);
+		newUser.setRole(role);
+		newUser.setPassword(hashedPassword); // Set the hashed password
+
+		// 4. Call DAO to save the user
+		boolean success = userDao.addUser(newUser);
+
+		if (success) {
+			return "Success: Customer '" + username + "' created successfully!";
+		} else {
+			return "Error: Could not create customer. The username or account number might already exist.";
+		}
 	}
 
-	// get all the transaction in the bank
+	// Get all transactions
 	public List<Transaction> getAllTransaction() throws SQLException {
-		List<Transaction> allTransaction = transactionDao.getAllTransaction();
-		return allTransaction;
+		return transactionDao.getAllTransactions();
+	}
+	// In AdminService.java
+	public List<Transaction> getAllTransactions(String sortField, String sortOrder, String filterAccountNo) throws SQLException {
+	    return transactionDao.getAllTransactions(sortField, sortOrder, filterAccountNo);
 	}
 }

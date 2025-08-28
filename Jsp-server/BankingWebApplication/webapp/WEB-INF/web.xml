@@ -6,42 +6,4 @@
          version="6.0">
 
     <display-name>BankingWebApplication</display-name>
-
-    <!-- Default page when user opens http://localhost:8080/BankingWebApplication/ -->
-    <welcome-file-list>
-        <welcome-file>login.jsp</welcome-file>
-    </welcome-file-list>
-
-    <!-- ================= Servlet Declarations ================= -->
-
-    <!-- Login Servlet -->
-    <servlet>
-        <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>com.banking.controller.LoginServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/login</url-pattern>
-    </servlet-mapping>
-
-    <!-- Register Servlet -->
-    <servlet>
-        <servlet-name>RegisterServlet</servlet-name>
-        <servlet-class>com.banking.controller.RegisterServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>RegisterServlet</servlet-name>
-        <url-pattern>/register</url-pattern>
-    </servlet-mapping>
-
-    <!-- Update Password Servlet -->
-    <servlet>
-        <servlet-name>UpdatePasswordServlet</servlet-name>
-        <servlet-class>com.banking.controller.UpdatePasswordServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>UpdatePasswordServlet</servlet-name>
-        <url-pattern>/updatePassword</url-pattern>
-    </servlet-mapping>
-
 </web-app>

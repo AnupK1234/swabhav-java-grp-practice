@@ -1,4 +1,4 @@
-package com.bank.misc;
+package com.aurionpro.misc;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -25,19 +25,12 @@ public class PasswordHasher {
             return Base64.getEncoder().encodeToString(hashedBytes);
 
         } catch (NoSuchAlgorithmException e) {
-            // This exception should never occur for SHA-256
             e.printStackTrace();
             return null;
         }
     }
 
-    /**
-     * Verifies a password by hashing the input and comparing with stored hash.
-     *
-     * @param inputPassword Plain-text password entered by user
-     * @param storedHash    Hash stored in the database
-     * @return true if match, false otherwise
-     */
+ 
     public boolean verifyPassword(String inputPassword, String storedHash) {
         String hashedInput = hashPassword(inputPassword);
         return hashedInput != null && hashedInput.equals(storedHash);
