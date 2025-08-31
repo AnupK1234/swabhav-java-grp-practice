@@ -1,70 +1,86 @@
 package com.aurionpro.model;
 
+import java.sql.Date;              // for dob
+import java.time.LocalDateTime;    // for created_at
+
 public class User {
-	private int id;
-	private String username;
-	private String passwordHash;
-	private String fullName;
-	private String email;
-	private String role; // ADMIN, MANAGER, EMPLOYEE
 
-	public User() {
-	}
+    private int id;
+    private String userName;
+    private String password;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private Date dob;
+    private Role role;
+    private Integer managerId;          // nullable
+    private int annualLeaveQuota;
+    private int leaveBalance;
+    private LocalDateTime createdAt;
 
-	public User(int id, String username, String passwordHash, String fullName, String email, String role) {
-		this.id = id;
-		this.username = username;
-		this.passwordHash = passwordHash;
-		this.fullName = fullName;
-		this.email = email;
-		this.role = role;
-	}
+    // Default constructor
+    public User() {}
 
-	public int getId() {
-		return id;
-	}
+    // Full constructor (with id)
+    public User(int id, String userName, String password, String firstName, String lastName,
+                String email, Date dob, Role role, Integer managerId,
+                int annualLeaveQuota, int leaveBalance, LocalDateTime createdAt) {
+        this.id = id;
+        this.userName = userName;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.dob = dob;
+        this.role = role;
+        this.managerId = managerId;
+        this.annualLeaveQuota = annualLeaveQuota;
+        this.leaveBalance = leaveBalance;
+        this.createdAt = createdAt;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    // Constructor without id (for inserts)
+    public User(String userName, String password, String firstName, String lastName,
+                String email, Date dob, Role role, Integer managerId,
+                int annualLeaveQuota, int leaveBalance, LocalDateTime createdAt) {
+        this(0, userName, password, firstName, lastName, email,
+             dob, role, managerId, annualLeaveQuota, leaveBalance, createdAt);
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    // Getters and Setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public String getUserName() { return userName; }
+    public void setUserName(String userName) { this.userName = userName; }
 
-	public String getPasswordHash() {
-		return passwordHash;
-	}
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 
-	public void setPasswordHash(String passwordHash) {
-		this.passwordHash = passwordHash;
-	}
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
 
-	public String getFullName() {
-		return fullName;
-	}
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
 
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-	public String getEmail() {
-		return email;
-	}
+    public Date getDob() { return dob; }
+    public void setDob(Date dob) { this.dob = dob; }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public Role getRole() { return role; }
+    public void setRole(Role role) { this.role = role; }
 
-	public String getRole() {
-		return role;
-	}
+    public Integer getManagerId() { return managerId; }
+    public void setManagerId(Integer managerId) { this.managerId = managerId; }
 
-	public void setRole(String role) {
-		this.role = role;
-	}
+    public int getAnnualLeaveQuota() { return annualLeaveQuota; }
+    public void setAnnualLeaveQuota(int annualLeaveQuota) { this.annualLeaveQuota = annualLeaveQuota; }
+
+    public int getLeaveBalance() { return leaveBalance; }
+    public void setLeaveBalance(int leaveBalance) { this.leaveBalance = leaveBalance; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }
