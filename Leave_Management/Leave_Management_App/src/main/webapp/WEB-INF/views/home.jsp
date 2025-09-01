@@ -22,7 +22,7 @@
 	display: flex;
 	align-items: center;
 }
-</style>
+</style> 
 </head>
 <body>
 	<!-- Navigation -->

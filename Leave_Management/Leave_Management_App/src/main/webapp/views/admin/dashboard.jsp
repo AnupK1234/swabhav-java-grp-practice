@@ -29,7 +29,6 @@
             </div>
         </div>
     </nav>
-
     <div class="container mt-4">
         <h1>Admin Dashboard</h1>
         <p>This is where admin-specific content and tools will go.</p>
