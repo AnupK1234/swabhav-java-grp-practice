@@ -100,4 +100,24 @@ public class UserDao {
             return true;
         }
     }
+    
+    public int getLeaveBalance(int id) {
+        String sql = "SELECT leave_balance FROM users WHERE id = ?";
+
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("leave_balance");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
 }

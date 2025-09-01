@@ -13,7 +13,7 @@ public class User {
 	private String role; 
 	private Integer managerId;
 	private int leaveBalance;
-
+	
 	
 	public int getId() {
 		return id;

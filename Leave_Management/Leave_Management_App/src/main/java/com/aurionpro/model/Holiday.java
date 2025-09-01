@@ -7,6 +7,23 @@ public class Holiday {
 	private LocalDate holidayDate;
 	private String title;
 
+	public Holiday() {
+
+	}
+
+	public Holiday(LocalDate holidayDate, String title) {
+
+		this.holidayDate = holidayDate;
+		this.title = title;
+	}
+
+	public Holiday(int id, LocalDate holidayDate, String title) {
+		super();
+		this.id = id;
+		this.holidayDate = holidayDate;
+		this.title = title;
+	}
+
 	public int getId() {
 		return id;
 	}
