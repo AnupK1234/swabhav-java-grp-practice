@@ -1,22 +1,17 @@
 package com.aurionpro.model;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
 public class LeaveRequest {
 	private int id;
-	private int employeeId;
-	private Integer managerId;
-	private LocalDate startDate;
-	private LocalDate endDate;
-	private int days;
-	private String type; // CASUAL, SICK, EARNED, UNPAID
+	private int userId;
+	private Date startDate;
+	private Date endDate;
 	private String reason;
-	private String status; // PENDING, APPROVED, REJECTED
-	private Integer decidedBy;
-	private String employeeName;
-	private String managerName;
+	private String status;
+	private String employeeFirstName;
+	private String employeeLastName;
 
-	// getters/setters
 	public int getId() {
 		return id;
 	}
@@ -25,52 +20,28 @@ public class LeaveRequest {
 		this.id = id;
 	}
 
-	public int getEmployeeId() {
-		return employeeId;
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setEmployeeId(int employeeId) {
-		this.employeeId = employeeId;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
-	public Integer getManagerId() {
-		return managerId;
-	}
-
-	public void setManagerId(Integer managerId) {
-		this.managerId = managerId;
-	}
-
-	public LocalDate getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(LocalDate startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
 
-	public LocalDate getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(LocalDate endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
-	}
-
-	public int getDays() {
-		return days;
-	}
-
-	public void setDays(int days) {
-		this.days = days;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 
 	public String getReason() {
@@ -89,27 +60,19 @@ public class LeaveRequest {
 		this.status = status;
 	}
 
-	public Integer getDecidedBy() {
-		return decidedBy;
+	public String getEmployeeFirstName() {
+		return employeeFirstName;
 	}
 
-	public void setDecidedBy(Integer decidedBy) {
-		this.decidedBy = decidedBy;
+	public void setEmployeeFirstName(String firstName) {
+		this.employeeFirstName = firstName;
 	}
 
-	public String getEmployeeName() {
-		return employeeName;
+	public String getEmployeeLastName() {
+		return employeeLastName;
 	}
 
-	public void setEmployeeName(String employeeName) {
-		this.employeeName = employeeName;
-	}
-
-	public String getManagerName() {
-		return managerName;
-	}
-
-	public void setManagerName(String managerName) {
-		this.managerName = managerName;
+	public void setEmployeeLastName(String lastName) {
+		this.employeeLastName = lastName;
 	}
 }
