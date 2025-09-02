@@ -19,7 +19,7 @@ public class HomeController extends HttpServlet {
         HttpSession session = request.getSession(false);
 
         if (session != null && session.getAttribute("user") != null) {
-            User user = (User) session.getAttribute("user");
+            User user = (User) 	session.getAttribute("user");
             String userRole = user.getRole();
 
             switch (userRole.toUpperCase()) {

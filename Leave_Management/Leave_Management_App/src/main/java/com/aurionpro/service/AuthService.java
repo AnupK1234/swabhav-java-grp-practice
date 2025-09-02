@@ -9,38 +9,38 @@ import com.aurionpro.model.User;
 
 public class AuthService {
 
-    private UserDao userDao;
+	private UserDao userDao;
 
-    public AuthService() {
-        this.userDao = new UserDao();
-    }
+	public AuthService() {
+		this.userDao = new UserDao();
+	}
 
-    private String hashPassword(String password) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hash = md.digest(password.getBytes(StandardCharsets.UTF_8));
-            BigInteger number = new BigInteger(1, hash);
-            StringBuilder hexString = new StringBuilder(number.toString(16));
-            
-            while (hexString.length() < 64) {
-                hexString.insert(0, '0');
-            }
-            
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("SHA-256 algorithm not found", e);
-        }
-    }
+	private String hashPassword(String password) {
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			byte[] hash = md.digest(password.getBytes(StandardCharsets.UTF_8));
+			BigInteger number = new BigInteger(1, hash);
+			StringBuilder hexString = new StringBuilder(number.toString(16));
 
-    public User authenticate(String email, String plainTextPassword) {
-        User user = userDao.findUserByEmail(email);
+			while (hexString.length() < 64) {
+				hexString.insert(0, '0');
+			}
 
-        if (user != null) {
-            String hashedPassword = hashPassword(plainTextPassword);
-            if (user.getPassword().equals(hashedPassword)) {
-                return user;
-            }
-        }
-        return null;
-    }
+			return hexString.toString();
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException("SHA-256 algorithm not found", e);
+		}
+	}
+
+	public User authenticate(String email, String plainTextPassword) {
+		User user = userDao.findUserByEmail(email);
+
+		if (user != null) {
+			String hashedPassword = hashPassword(plainTextPassword);
+			if (user.getPassword().equals(hashedPassword)) {
+				return user;
+			}
+		}	
+		return null;
+	}
 }
