@@ -161,8 +161,8 @@
                 </a>
             </li>
             <li>
-                <a href="${pageContext.request.contextPath}/manager?action=showApplyLeave" class="nav-link ${requestScope.view == 'apply_leave' ? 'active' : 'text-white'}">
-                    <i class="bi bi-calendar-plus"></i>Apply for Leave
+                <a href="${pageContext.request.contextPath}/manager?action=showAttendanceLeave" class="nav-link ${requestScope.view == 'attendance_leave' ? 'active' : 'text-white'}">
+                    <i class="bi bi-calendar-plus"></i>Attendance & Leave
                 </a>
             </li>
             <li>
@@ -193,8 +193,8 @@
         <c:if test="${requestScope.view == 'leave_history'}">
             <jsp:include page="leave_history.jsp" />
         </c:if>
-        <c:if test="${requestScope.view == 'apply_leave'}">
-            <jsp:include page="apply_leave.jsp" />
+         <c:if test="${requestScope.view == 'attendance_leave'}">
+            <jsp:include page="attendance_leave.jsp" />
         </c:if>
         <c:if test="${requestScope.view == 'edit_profile'}">
             <jsp:include page="edit_profile.jsp" />

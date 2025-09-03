@@ -3,10 +3,13 @@ package com.aurionpro.controller;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
-import com.aurionpro.dao.LeaveRequestDao;
-import com.aurionpro.dao.UserDao;
+
+import com.aurionpro.model.Attendance;
+import com.aurionpro.model.Holiday;
 import com.aurionpro.model.LeaveRequest;
 import com.aurionpro.model.User;
+import com.aurionpro.service.AttendanceService;
+import com.aurionpro.service.HolidayService;
 import com.aurionpro.service.LeaveService;
 import com.aurionpro.service.UserService;
 
@@ -22,11 +25,15 @@ public class ManagerController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private LeaveService leaveService;
 	private UserService userService;
+	private HolidayService holidayService;
+	private AttendanceService attendanceService;
 
 	@Override
 	public void init() {
 		this.leaveService = new LeaveService();
 		this.userService = new UserService();
+		this.holidayService = new HolidayService();
+		this.attendanceService = new AttendanceService();
 	}
 
 	@Override
@@ -54,8 +61,8 @@ public class ManagerController extends HttpServlet {
 		case "showLeaveHistory":
 			showLeaveHistoryPage(request, response);
 			break;
-		case "showApplyLeave":
-			showApplyLeaveForm(request, response);
+		case "showAttendanceLeave":
+			showAttendanceLeavePage(request, response);
 			break;
 		case "showEditProfile":
 			showEditProfileForm(request, response);
@@ -79,6 +86,9 @@ public class ManagerController extends HttpServlet {
 		case "applyLeave":
 			submitLeaveApplication(request, response);
 			break;
+		case "markAttendance":
+			markAttendance(request, response);
+			break;
 		case "updateProfile":
 			updateProfile(request, response);
 			break;
@@ -88,6 +98,43 @@ public class ManagerController extends HttpServlet {
 		}
 	}
 
+	private void showAttendanceLeavePage(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		User currentUser = (User) request.getSession().getAttribute("user");
+
+		List<Holiday> holidays = holidayService.getAllHolidays();
+		List<Attendance> attendanceRecords = attendanceService.getAttendanceForUser(currentUser.getId());
+		List<LeaveRequest> leaveHistory = leaveService.getLeaveHistoryForUser(currentUser.getId());
+
+		boolean isAttendanceMarkedToday = attendanceService.isAttendanceMarkedToday(attendanceRecords);
+		List<String> missedDates = attendanceService.calculateMissedAttendanceDates(holidays, attendanceRecords,
+				leaveHistory);
+
+		request.setAttribute("holidays", holidays);
+		request.setAttribute("attendanceRecords", attendanceRecords);
+		request.setAttribute("leaveHistory", leaveHistory);
+		request.setAttribute("isAttendanceMarkedToday", isAttendanceMarkedToday);
+		request.setAttribute("missedDates", missedDates);
+
+		request.setAttribute("view", "attendance_leave");
+		request.getRequestDispatcher("/views/manager/manager_home.jsp").forward(request, response);
+	}
+
+	private void markAttendance(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		HttpSession session = request.getSession();
+		User currentUser = (User) session.getAttribute("user");
+
+		boolean success = attendanceService.markUserAttendance(currentUser);
+
+		if (success) {
+			session.setAttribute("success_toast", "Attendance marked for today!");
+		} else {
+			session.setAttribute("error_toast", "Attendance already marked for today or an error occurred.");
+		}
+
+		response.sendRedirect(request.getContextPath() + "/manager?action=showAttendanceLeave");
+	}
+
 	private void showEditProfileForm(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setAttribute("view", "edit_profile");
@@ -95,57 +142,47 @@ public class ManagerController extends HttpServlet {
 	}
 
 	private void updateProfile(HttpServletRequest request, HttpServletResponse response)
-	        throws IOException, ServletException {
-	    HttpSession session = request.getSession();
-	    User currentUser = (User) session.getAttribute("user");
+			throws IOException, ServletException {
+		HttpSession session = request.getSession();
+		User currentUser = (User) session.getAttribute("user");
 
-	    // Get the submitted form data
-	    String firstName = request.getParameter("firstName");
-	    String lastName = request.getParameter("lastName");
-	    String email = request.getParameter("email");
-	    
-	    // --- SERVER-SIDE VALIDATION ---
-	    // 1. Check for empty or null fields
-	    if (firstName == null || firstName.trim().isEmpty() || 
-	        lastName == null || lastName.trim().isEmpty() || 
-	        email == null || email.trim().isEmpty()) {
-	        
-	        session.setAttribute("error_toast", "All fields are required. Please fill them out.");
-	        response.sendRedirect(request.getContextPath() + "/manager?action=showEditProfile");
-	        return; // Stop processing immediately
-	    }
+		String firstName = request.getParameter("firstName");
+		String lastName = request.getParameter("lastName");
+		String email = request.getParameter("email");
 
-	    // 2. Check for a valid email format using a simple regex
-	    String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
-	    if (!email.matches(emailRegex)) {
-	        session.setAttribute("error_toast", "Please enter a valid email address.");
-	        response.sendRedirect(request.getContextPath() + "/manager?action=showEditProfile");
-	        return; // Stop processing immediately
-	    }
-	    // --- END OF SERVER-SIDE VALIDATION ---
+		if (firstName == null || firstName.trim().isEmpty() || lastName == null || lastName.trim().isEmpty()
+				|| email == null || email.trim().isEmpty()) {
 
-	    String originalEmail = currentUser.getEmail();
+			session.setAttribute("error_toast", "All fields are required. Please fill them out.");
+			response.sendRedirect(request.getContextPath() + "/manager?action=showEditProfile");
+			return;
+		}
 
-	    // The data is valid, so we can now safely update the user object
-	    currentUser.setFirstName(firstName.trim()); // Use trimmed values
-	    currentUser.setLastName(lastName.trim());
+		String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+		if (!email.matches(emailRegex)) {
+			session.setAttribute("error_toast", "Please enter a valid email address.");
+			response.sendRedirect(request.getContextPath() + "/manager?action=showEditProfile");
+			return;
+		}
 
-	    // Pass the new email to the service layer, which will handle the uniqueness check
-	    currentUser.setEmail(email.trim()); 
+		String originalEmail = currentUser.getEmail();
 
-	    boolean success = userService.updateUserProfile(currentUser, originalEmail);
+		currentUser.setFirstName(firstName.trim());
+		currentUser.setLastName(lastName.trim());
 
-	    if (success) {
-	        session.setAttribute("user", currentUser);
-	        session.setAttribute("success_toast", "Profile updated successfully!");
-	    } else {
-	        // If it failed, the service layer determined the email was a duplicate.
-	        // Revert the email on our object so the form displays the original, valid email.
-	        currentUser.setEmail(originalEmail); 
-	        session.setAttribute("error_toast", "Email is already registered by another user.");
-	    }
+		currentUser.setEmail(email.trim());
 
-	    response.sendRedirect(request.getContextPath() + "/manager?action=showEditProfile");
+		boolean success = userService.updateUserProfile(currentUser, originalEmail);
+
+		if (success) {
+			session.setAttribute("user", currentUser);
+			session.setAttribute("success_toast", "Profile updated successfully!");
+		} else {
+			currentUser.setEmail(originalEmail);
+			session.setAttribute("error_toast", "Email is already registered by another user.");
+		}
+
+		response.sendRedirect(request.getContextPath() + "/manager?action=showEditProfile");
 	}
 
 	private void showDashboard(HttpServletRequest request, HttpServletResponse response)
@@ -180,7 +217,7 @@ public class ManagerController extends HttpServlet {
 	private void showManageEmployeesPage(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		User manager = (User) request.getSession().getAttribute("user");
-		List<User> employeeList = userService.getEmployeesByManager(manager.getId()); 
+		List<User> employeeList = userService.getEmployeesByManager(manager.getId());
 
 		request.setAttribute("employeeList", employeeList);
 		request.setAttribute("view", "manage_employees");
@@ -190,16 +227,10 @@ public class ManagerController extends HttpServlet {
 	private void showLeaveHistoryPage(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		User manager = (User) request.getSession().getAttribute("user");
-		List<LeaveRequest> leaveHistory = leaveService.getLeaveHistoryForUser(manager.getId()); 
+		List<LeaveRequest> leaveHistory = leaveService.getLeaveHistoryForUser(manager.getId());
 
 		request.setAttribute("leaveHistory", leaveHistory);
 		request.setAttribute("view", "leave_history");
-		request.getRequestDispatcher("/views/manager/manager_home.jsp").forward(request, response);
-	}
-
-	private void showApplyLeaveForm(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		request.setAttribute("view", "apply_leave");
 		request.getRequestDispatcher("/views/manager/manager_home.jsp").forward(request, response);
 	}
 
@@ -210,11 +241,11 @@ public class ManagerController extends HttpServlet {
 		boolean success = false;
 
 		if ("approve".equals(decision)) {
-			success = leaveService.approveLeave(leaveId); 
+			success = leaveService.approveLeave(leaveId);
 			if (success)
 				session.setAttribute("success_toast", "Leave request approved.");
 		} else if ("reject".equals(decision)) {
-			success = leaveService.rejectLeave(leaveId); 
+			success = leaveService.rejectLeave(leaveId);
 			if (success)
 				session.setAttribute("success_toast", "Leave request rejected.");
 		}
@@ -237,7 +268,7 @@ public class ManagerController extends HttpServlet {
 		leave.setEndDate(Date.valueOf(request.getParameter("endDate")));
 		leave.setReason(request.getParameter("reason"));
 
-		boolean success = leaveService.applyForLeave(leave); 
+		boolean success = leaveService.applyForLeave(leave);
 		if (success) {
 			session.setAttribute("success_toast", "Leave application submitted!");
 			response.sendRedirect(request.getContextPath() + "/manager?action=showLeaveHistory");
