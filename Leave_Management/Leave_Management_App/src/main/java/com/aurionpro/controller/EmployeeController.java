@@ -88,25 +88,25 @@ public class EmployeeController extends HttpServlet {
         request.setAttribute("pendingCount", 1);
         request.setAttribute("approvedCount", 5);
 
-        request.getRequestDispatcher("/views/employee/empDashboard.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/employee/dashboard.jsp").forward(request, response);
     }
 
     private void showProfile(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/views/employee/editProfile.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/employee/edit_profile.jsp").forward(request, response);
     }
 
     private void showApplyLeavePage(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // request.setAttribute("holidayList", employeeService.getEmpHoliday());
-        request.getRequestDispatcher("/views/employee/applyLeave.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/employee/apply_leave.jsp").forward(request, response);
     }
 
     private void showLeaveHistory(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // TODO: fetch leave history list from service
         // request.setAttribute("leaveHistory", employeeService.getLeaveHistory(userId));
-        request.getRequestDispatcher("/views/employee/leaveHistory.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/employee/leave_history.jsp").forward(request, response);
     }
 
     // --- POST handlers ---
