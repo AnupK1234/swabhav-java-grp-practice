@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import com.aurionpro.dao.AttendanceDao;
+import com.aurionpro.dao.AttendanceDAO;
 import com.aurionpro.model.Attendance;
 import com.aurionpro.model.Holiday;
 import com.aurionpro.model.LeaveRequest;
@@ -14,10 +14,10 @@ import com.aurionpro.model.User;
 
 public class AttendanceService {
     
-    private AttendanceDao attendanceDao;
+    private AttendanceDAO attendanceDao;
 
     public AttendanceService() {
-        this.attendanceDao = new AttendanceDao();
+        this.attendanceDao = new AttendanceDAO();
     }
 
     public List<Attendance> getAttendanceForUser(int userId) {

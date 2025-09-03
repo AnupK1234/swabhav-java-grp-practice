@@ -12,7 +12,7 @@ import com.aurionpro.model.Holiday;
 import com.aurionpro.model.User;
 import com.aurionpro.util.DatabaseUtil;
 
-public class EmployeeDao {
+public class EmployeeDAO {
 
 	public int getLeaveBalance(int userId) {
 		String sql = "SELECT leave_balance FROM users WHERE id = ?";

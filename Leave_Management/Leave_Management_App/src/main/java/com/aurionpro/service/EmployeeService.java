@@ -2,7 +2,7 @@ package com.aurionpro.service;
 
 import java.util.List;
 
-import com.aurionpro.dao.EmployeeDao;
+import com.aurionpro.dao.EmployeeDAO;
 import com.aurionpro.dao.UserDao;
 import com.aurionpro.model.Holiday;
 import com.aurionpro.model.User;
@@ -10,11 +10,11 @@ import com.aurionpro.model.User;
 public class EmployeeService {
 
 	private UserDao userDao;
-	private EmployeeDao empDao;
+	private EmployeeDAO empDao;
 
 	public EmployeeService() {
 		this.userDao = new UserDao();
-		this.empDao = new EmployeeDao();
+		this.empDao = new EmployeeDAO();
 	}
 
 	public boolean updateUserProfile(User userToUpdate, String originalEmail) {
