@@ -1,33 +1,55 @@
 package com.aurionpro.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import com.aurionpro.model.Holiday; 
+
+import com.aurionpro.model.Holiday;
 import com.aurionpro.util.DatabaseUtil;
 
-public class HolidayDao {
+public class HolidayDAO {
+	public List<Holiday> findAll() {
+		List<Holiday> list = new ArrayList<>();
+		try (Connection con = DatabaseUtil.getConnection();
+				PreparedStatement ps = con.prepareStatement("SELECT * FROM holidays ORDER BY holiday_date")) {
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					Holiday h = new Holiday();
+					h.setId(rs.getInt("id"));
+					h.setHolidayDate(rs.getDate("holiday_date").toLocalDate());
+					h.setTitle(rs.getString("title"));
+					list.add(h);
+				}
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return list;
+	}
 
-    public List<Holiday> findAllHolidays() {
-        List<Holiday> holidays = new ArrayList<>();
-        String sql = "SELECT * FROM holidays ORDER BY holiday_date";
-        
-        try (Connection conn = DatabaseUtil.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-        	while (rs.next()) {
-        	    Holiday holiday = new Holiday();
-        	    holiday.setId(rs.getInt("id"));
-        	    holiday.setHolidayDate(rs.getDate("holiday_date").toLocalDate()); 
-        	    holiday.setTitle(rs.getString("title"));
-        	    holidays.add(holiday);
-        	}
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return holidays;
-    }
+	public void create(LocalDate date, String title) {
+		try (Connection con = DatabaseUtil.getConnection();
+				PreparedStatement ps = con.prepareStatement("INSERT INTO holidays(holiday_date,title) VALUES(?,?)")) {
+			ps.setDate(1, Date.valueOf(date));
+			ps.setString(2, title);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void delete(int id) {
+		try (Connection con = DatabaseUtil.getConnection();
+				PreparedStatement ps = con.prepareStatement("DELETE FROM holidays WHERE id=?")) {
+			ps.setInt(1, id);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }
