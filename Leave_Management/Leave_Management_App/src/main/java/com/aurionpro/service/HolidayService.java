@@ -1,19 +1,22 @@
 package com.aurionpro.service;
 
-import java.util.List;
-import com.aurionpro.dao.HolidayDao;
+import com.aurionpro.dao.HolidayDAO;
 import com.aurionpro.model.Holiday;
+import java.time.LocalDate;
+import java.util.List;
 
 public class HolidayService {
+	private final HolidayDAO dao = new HolidayDAO();
 
-    private HolidayDao holidayDao;
+	public List<Holiday> getAllHolidays() {
+		return dao.findAll();
+	}
 
-    public HolidayService() {
-        this.holidayDao = new HolidayDao();
-    }
+	public void createHoliday(LocalDate date, String title) {
+		dao.create(date, title);
+	}
 
-   
-    public List<Holiday> getAllHolidays() {
-        return holidayDao.findAllHolidays();
-    }
+	public void deleteHoliday(int id) {
+		dao.delete(id);
+	}
 }
