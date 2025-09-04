@@ -5,3 +5,8 @@
 /.sonarlint
 /apache-tomcat-*
 Leave_Management/Leave_Management_App/src/main/webapp/META-INF/context.xml
+.metadata/
+.idea/
+.vscode/
+target/
+*.log

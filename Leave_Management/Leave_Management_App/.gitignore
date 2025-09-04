@@ -1,1 +1,7 @@
-/build/
+.metadata/
+.idea/
+.vscode/
+target/
+build/
+*.log
+/src/main/webapp/META-INF/context.xml
