@@ -52,4 +52,14 @@ public class HolidayDAO {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public void addHoliday(Date holidayDate, String description) throws SQLException {
+        String sql = "INSERT INTO holidays (holiday_date, title) VALUES (?, ?)";
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setDate(1, holidayDate);
+            ps.setString(2, description);
+            ps.executeUpdate();
+        }
+    }
 }

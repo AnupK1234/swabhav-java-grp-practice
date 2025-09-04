@@ -1,8 +1,11 @@
 package com.aurionpro.controller;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 
+import com.aurionpro.dao.AttendanceDAO;
+import com.aurionpro.dao.HolidayDAO;
 import com.aurionpro.model.LeaveRequest;
 import com.aurionpro.model.User;
 import com.aurionpro.service.LeaveService;
@@ -41,16 +44,46 @@ public class AdminController extends HttpServlet {
 				action = "dashboard";
 			}
 		}
-		
+
 		switch (action) {
 		case "showPendingRequests":
 			showPendingRequestsPage(request, response);
+			break;
+		case "manageEmployees":
+			showManageEmployeesPage(request, response);
+			break;
+		case "showHoliday":
+			showCreateHoliday(request, response);
 			break;
 		case "dashboard":
 		default:
 			showDashboard(request, response);
 			break;
 		}
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String action = request.getParameter("action");
+		String pathInfo = request.getPathInfo();
+
+		if (action == null) {
+			if (pathInfo != null && !pathInfo.equals("/")) {
+				action = pathInfo.substring(1);
+			} else {
+				action = "dashboard";
+			}
+		}
+		switch (action) {
+		case "createHoliday":
+			createHoliday(request, response);
+			break;
+		case "processLeave":
+			processLeaveRequest(request, response);
+			break;
+		}
+
 	}
 
 	private void showPendingRequestsPage(HttpServletRequest request, HttpServletResponse response)
@@ -80,4 +113,67 @@ public class AdminController extends HttpServlet {
 		request.setAttribute("view", "dashboard");
 		request.getRequestDispatcher("/views/admin/dashboard.jsp").forward(request, response);
 	}
+
+	private void showManageEmployeesPage(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		User manager = (User) request.getSession().getAttribute("user");
+		List<User> employeeList = userService.getAllEmployees();
+
+		request.setAttribute("employeeList", employeeList);
+		request.setAttribute("view", "manage_employees");
+		request.getRequestDispatcher("/views/admin/dashboard.jsp").forward(request, response);
+	}
+
+	private void createHoliday(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String holidayDateStr = request.getParameter("holiday_date");
+		String description = request.getParameter("description");
+
+		try {
+			Date holidayDate = Date.valueOf(holidayDateStr); // java.sql.Date
+			HolidayDAO holidayDAO = new HolidayDAO();
+			holidayDAO.addHoliday(holidayDate, description);
+
+			// Add attendance as PRESENT for all employees
+			AttendanceDAO attendanceDAO = new AttendanceDAO();
+			attendanceDAO.markAllEmployeesPresent(holidayDate);
+
+			request.getSession().setAttribute("success_toast", "Holiday created successfully!");
+			request.setAttribute("view", "showHoliday");
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.getSession().setAttribute("error_toast", "Failed to create holiday.");
+		}
+		request.getRequestDispatcher("/views/admin/dashboard.jsp").forward(request, response);
+	}
+
+	private void showCreateHoliday(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		request.setAttribute("view", "showHoliday");
+		request.getRequestDispatcher("/views/admin/dashboard.jsp").forward(request, response);
+	}
+
+	private void processLeaveRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		int leaveId = Integer.parseInt(request.getParameter("leaveId"));
+		String decision = request.getParameter("decision");
+		HttpSession session = request.getSession();
+		boolean success = false;
+
+		if ("approve".equals(decision)) {
+			success = leaveService.approveLeave(leaveId);
+			if (success)
+				session.setAttribute("success_toast", "Leave request approved.");
+		} else if ("reject".equals(decision)) {
+			success = leaveService.rejectLeave(leaveId);
+			if (success)
+				session.setAttribute("success_toast", "Leave request rejected.");
+		}
+
+		if (!success) {
+			session.setAttribute("error_toast", "Failed to process leave request.");
+		}
+
+		response.sendRedirect(request.getContextPath() + "/admin?action=showPendingRequests");
+	}
+
 }

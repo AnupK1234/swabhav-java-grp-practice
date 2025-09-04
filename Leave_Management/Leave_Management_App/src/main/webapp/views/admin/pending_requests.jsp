@@ -87,7 +87,7 @@ h3 {
 							<td><c:out value="${req.endDate}" /></td>
 							<td><c:out value="${req.reason}" /></td>
 							<td class="text-center">
-								<form action="${pageContext.request.contextPath}/manager"
+								<form action="${pageContext.request.contextPath}/admin"
 									method="post" class="d-inline">
 									<input type="hidden" name="action" value="processLeave">
 									<input type="hidden" name="leaveId" value="${req.id}">

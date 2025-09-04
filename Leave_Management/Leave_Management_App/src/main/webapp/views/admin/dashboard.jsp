@@ -209,6 +209,16 @@ body {
 				class="nav-link ${requestScope.view == 'manage_employees' ? 'active' : 'text-white'}">
 					<i class="bi bi-people"></i>View Employees
 			</a></li>
+			<li><a
+				href="${pageContext.request.contextPath}/admin?action=showHoliday"
+				class="nav-link ${requestScope.view == 'showHoliday' ? 'active' : 'text-white'}">
+					<i class="bi bi-people"></i>Create Holiday
+			</a></li>
+			<li><a
+				href="${pageContext.request.contextPath}/admin?action=createEmployee"
+				class="nav-link ${requestScope.view == 'create_employee' ? 'active' : 'text-white'}">
+					<i class="bi bi-people"></i>Create Employee
+			</a></li>
 			<!--
             <li>
                 <a href="${pageContext.request.contextPath}/admin?action=showEditProfile" class="nav-link ${requestScope.view == 'edit_profile' ? 'active' : 'text-white'}">
@@ -235,15 +245,13 @@ body {
 		<c:if test="${requestScope.view == 'pending_requests'}">
 			<jsp:include page="pending_requests.jsp" />
 		</c:if>
-		<%-- <c:if test="${requestScope.view == 'manage_employees'}">
+		<c:if test="${requestScope.view == 'manage_employees'}">
             <jsp:include page="employees.jsp" />
         </c:if>
-        <c:if test="${requestScope.view == 'leave_history'}">
-            <jsp:include page="leave_history.jsp" />
+		<c:if test="${requestScope.view == 'showHoliday'}">
+            <jsp:include page="create_holiday.jsp" />
         </c:if>
-        <c:if test="${requestScope.view == 'apply_leave'}">
-            <jsp:include page="apply_leave.jsp" />
-        </c:if>
+		<%--
         <c:if test="${requestScope.view == 'edit_profile'}">
             <jsp:include page="edit_profile.jsp" />
         </c:if> --%>

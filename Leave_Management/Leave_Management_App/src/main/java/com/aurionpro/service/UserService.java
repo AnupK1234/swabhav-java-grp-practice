@@ -36,5 +36,8 @@ public class UserService {
 	public int getLeaveBalance(int id) {
 		return userDao.getLeaveBalance(id);
 	}
-
+	
+	public List<User> getAllEmployees() {
+		return userDao.findAllEmployees();
+	}
 }
