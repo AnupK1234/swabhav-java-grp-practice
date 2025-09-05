@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
 import com.aurionpro.model.LeaveRequest;
 import com.aurionpro.util.DatabaseUtil;
 
@@ -161,4 +163,40 @@ public class LeaveRequestDao {
 
 		return requests;
 	}
+
+	public int countPendingRequests() throws SQLException {
+		String sql = "SELECT COUNT(*) FROM leave_requests WHERE status = 'PENDING'";
+		try (Connection conn = DatabaseUtil.getConnection();
+				Statement st = conn.createStatement();
+				ResultSet rs = st.executeQuery(sql)) {
+			if (rs.next())
+				return rs.getInt(1);
+		}
+		return 0;
+	}
+
+	public List<LeaveRequest> findRecentPendingRequests(int limit) throws SQLException {
+		List<LeaveRequest> list = new ArrayList<>();
+		String sql = "SELECT lr.*, u.first_name, u.last_name "
+				+ "FROM leave_requests lr JOIN users u ON lr.user_id = u.id "
+				+ "WHERE lr.status = 'PENDING' ORDER BY lr.created_at DESC LIMIT ?";
+		try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setInt(1, limit);
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					LeaveRequest req = new LeaveRequest();
+					req.setId(rs.getInt("id"));
+					req.setEmployeeFirstName(rs.getString("first_name"));
+					req.setEmployeeLastName(rs.getString("last_name"));
+					req.setStartDate(rs.getDate("start_date"));
+					req.setEndDate(rs.getDate("end_date"));
+					req.setReason(rs.getString("reason"));
+					req.setStatus(rs.getString("status"));
+					list.add(req);
+				}
+			}
+		}
+		return list;
+	}
+
 }

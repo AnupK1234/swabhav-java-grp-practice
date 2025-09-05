@@ -153,4 +153,16 @@ public class EmployeeDAO {
 		return user;
 	}
 
+	public int countByRole(String role) throws SQLException {
+		String sql = "SELECT COUNT(*) FROM users WHERE role = ?";
+		try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setString(1, role);
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next())
+					return rs.getInt(1);
+			}
+		}
+		return 0;
+	}
+
 }
