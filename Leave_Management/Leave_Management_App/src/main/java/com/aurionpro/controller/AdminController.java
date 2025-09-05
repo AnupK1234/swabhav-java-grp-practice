@@ -135,8 +135,8 @@ public class AdminController extends HttpServlet {
 			holidayDAO.addHoliday(holidayDate, description);
 
 			// Add attendance as PRESENT for all employees
-			AttendanceDAO attendanceDAO = new AttendanceDAO();
-			attendanceDAO.markAllEmployeesPresent(holidayDate);
+			// AttendanceDAO attendanceDAO = new AttendanceDAO();
+			// attendanceDAO.markAllEmployeesPresent(holidayDate);
 
 			request.getSession().setAttribute("success_toast", "Holiday created successfully!");
 			request.setAttribute("view", "showHoliday");
