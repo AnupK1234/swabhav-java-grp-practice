@@ -66,4 +66,19 @@ public class AttendanceService {
         }
         return missedDates;
     }
+    public int getPresentDaysCountForCurrentMonth(int userId) {
+        return attendanceDao.countPresentDaysInCurrentMonth(userId);
+    }
+    public int getAbsentDaysCountForCurrentMonth(List<String> missedDates) {
+        LocalDate today = LocalDate.now();
+        int currentMonth = today.getMonthValue();
+        int currentYear = today.getYear();
+        
+        long absentCount = missedDates.stream()
+            .map(LocalDate::parse)
+            .filter(date -> date.getMonthValue() == currentMonth && date.getYear() == currentYear)
+            .count();
+        
+        return (int) absentCount;
+    }
 }

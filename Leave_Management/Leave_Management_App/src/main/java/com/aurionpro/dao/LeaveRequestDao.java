@@ -85,16 +85,19 @@ public class LeaveRequestDao {
 		}
 	}
 
-	public boolean rejectLeaveRequest(int leaveId) {
-		String sql = "UPDATE leave_requests SET status = 'REJECTED' WHERE id = ?";
-		try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-			stmt.setInt(1, leaveId);
-			return stmt.executeUpdate() > 0;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
+	public boolean rejectLeaveRequest(int leaveId, String reason) {
+	    String sql = "UPDATE leave_requests SET status = 'REJECTED', rejection_reason = ? WHERE id = ?";
+	    try (Connection conn = DatabaseUtil.getConnection(); 
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setString(1, reason);
+	        stmt.setInt(2, leaveId);
+	        return stmt.executeUpdate() > 0;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
 	}
+
 
 	public List<LeaveRequest> findLeaveHistoryByUserId(int userId) {
 		List<LeaveRequest> history = new ArrayList<>();
@@ -112,6 +115,7 @@ public class LeaveRequestDao {
 				req.setEndDate(rs.getDate("end_date"));
 				req.setReason(rs.getString("reason"));
 				req.setStatus(rs.getString("status"));
+				req.setRejectionReason(rs.getString("rejection_reason"));
 				history.add(req);
 			}
 		} catch (SQLException e) {
@@ -161,4 +165,28 @@ public class LeaveRequestDao {
 
 		return requests;
 	}
+	
+	public int getTotalLeaveDaysInMonth(int userId, int year, int month) {
+        String sql = "SELECT SUM(DATEDIFF(end_date, start_date) + 1) FROM leave_requests " +
+                     "WHERE user_id = ? AND (status = 'APPROVED' OR status = 'PENDING') " +
+                     "AND YEAR(start_date) = ? AND MONTH(start_date) = ?";
+        int totalDays = 0;
+
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, userId);
+            stmt.setInt(2, year);
+            stmt.setInt(3, month);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    totalDays = rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return totalDays;
+    }
 }

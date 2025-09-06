@@ -2,7 +2,11 @@ package com.aurionpro.controller;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.aurionpro.model.Attendance;
 import com.aurionpro.model.Holiday;
@@ -102,19 +106,66 @@ public class ManagerController extends HttpServlet {
 			throws ServletException, IOException {
 		User currentUser = (User) request.getSession().getAttribute("user");
 
-		List<Holiday> holidays = holidayService.getAllHolidays();
+		List<Holiday> allHolidays = holidayService.getAllHolidays();
 		List<Attendance> attendanceRecords = attendanceService.getAttendanceForUser(currentUser.getId());
 		List<LeaveRequest> leaveHistory = leaveService.getLeaveHistoryForUser(currentUser.getId());
-
+		List<Holiday> upcomingHolidays = holidayService.getUpcomingHolidays();
+		LocalDate today = LocalDate.now();
+		DayOfWeek todayDayOfWeek = today.getDayOfWeek();
 		boolean isAttendanceMarkedToday = attendanceService.isAttendanceMarkedToday(attendanceRecords);
-		List<String> missedDates = attendanceService.calculateMissedAttendanceDates(holidays, attendanceRecords,
+
+		// Check if attendance can be marked today
+		boolean canMarkAttendance = true;
+		String disableReason = "";
+
+		if (isAttendanceMarkedToday) {
+			canMarkAttendance = false;
+			disableReason = "Attendance Marked Today";
+		} else if (todayDayOfWeek == DayOfWeek.SATURDAY || todayDayOfWeek == DayOfWeek.SUNDAY) {
+			canMarkAttendance = false;
+			disableReason = "Cannot Mark on Weekend";
+		} else {
+			// Check if today is a holiday
+			for (Holiday holiday : allHolidays) {
+				if (holiday.getHolidayDate().equals(today)) {
+					canMarkAttendance = false;
+					disableReason = "Today is a Holiday";
+					break;
+				}
+			}
+			// If it's not a holiday, check if the user is on approved leave today
+			if (canMarkAttendance) {
+				for (LeaveRequest lr : leaveHistory) {
+					if ("APPROVED".equalsIgnoreCase(lr.getStatus())) {
+						LocalDate start = lr.getStartDate().toLocalDate();
+						LocalDate end = lr.getEndDate().toLocalDate();
+						if (!today.isBefore(start) && !today.isAfter(end)) {
+							canMarkAttendance = false;
+							disableReason = "You are on Approved Leave";
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		List<String> missedDates = attendanceService.calculateMissedAttendanceDates(allHolidays, attendanceRecords,
 				leaveHistory);
 
-		request.setAttribute("holidays", holidays);
+		int presentCount = attendanceService.getPresentDaysCountForCurrentMonth(currentUser.getId());
+		int absentCount = attendanceService.getAbsentDaysCountForCurrentMonth(missedDates);
+		int leaveBalance = currentUser.getLeaveBalance();
+		request.setAttribute("holidays", allHolidays);
+		request.setAttribute("upcomingHolidays", upcomingHolidays);
 		request.setAttribute("attendanceRecords", attendanceRecords);
 		request.setAttribute("leaveHistory", leaveHistory);
 		request.setAttribute("isAttendanceMarkedToday", isAttendanceMarkedToday);
 		request.setAttribute("missedDates", missedDates);
+		request.setAttribute("presentCount", presentCount);
+		request.setAttribute("absentCount", absentCount);
+		request.setAttribute("leaveBalance", leaveBalance);
+		request.setAttribute("canMarkAttendance", canMarkAttendance);
+		request.setAttribute("disableReason", disableReason);
 
 		request.setAttribute("view", "attendance_leave");
 		request.getRequestDispatcher("/views/manager/manager_home.jsp").forward(request, response);
@@ -186,24 +237,76 @@ public class ManagerController extends HttpServlet {
 	}
 
 	private void showDashboard(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		HttpSession session = request.getSession(false);
-		User manager = (User) session.getAttribute("user");
+	        throws ServletException, IOException {
+	    HttpSession session = request.getSession(false);
+	    User manager = (User) session.getAttribute("user");
 
-		int pendingRequestsCount = leaveService.getPendingRequestsForManager(manager.getId()).size();
-		int teamMembersCount = userService.getEmployeesByManager(manager.getId()).size();
-		int myLeavesCount = leaveService.getLeaveHistoryForUser(manager.getId()).size();
-		int myLeaveBalance = manager.getLeaveBalance();
+	    int pendingRequestsCount = leaveService.getPendingRequestsForManager(manager.getId()).size();
+	    int teamMembersCount = userService.getEmployeesByManager(manager.getId()).size();
+	    int myLeavesCount = leaveService.getLeaveHistoryForUser(manager.getId()).size();
+	    int myLeaveBalance = manager.getLeaveBalance();
 
-		request.setAttribute("pendingRequestsCount", pendingRequestsCount);
-		request.setAttribute("teamMembersCount", teamMembersCount);
-		request.setAttribute("myLeavesCount", myLeavesCount);
-		request.setAttribute("myLeaveBalance", myLeaveBalance);
+	    List<Holiday> upcomingHolidays = holidayService.getUpcomingHolidays();
+	    
+	    List<Holiday> allHolidays = holidayService.getAllHolidays();
+	    List<Attendance> attendanceRecords = attendanceService.getAttendanceForUser(manager.getId());
+	    List<LeaveRequest> leaveHistory = leaveService.getLeaveHistoryForUser(manager.getId());
 
-		request.setAttribute("view", "dashboard");
-		request.getRequestDispatcher("/views/manager/manager_home.jsp").forward(request, response);
+	    LocalDate today = LocalDate.now();
+	    DayOfWeek todayDayOfWeek = today.getDayOfWeek();
+	    boolean isAttendanceMarkedToday = attendanceService.isAttendanceMarkedToday(attendanceRecords);
+	    
+		// Check if attendance can be marked today
+
+	    boolean canMarkAttendance = true;
+	    String disableReason = "";
+
+	    if (isAttendanceMarkedToday) {
+	        canMarkAttendance = false;
+	        disableReason = "Attendance Marked";
+	    } else if (todayDayOfWeek == DayOfWeek.SATURDAY || todayDayOfWeek == DayOfWeek.SUNDAY) {
+	        canMarkAttendance = false;
+	        disableReason = "Weekend";
+	    } else {
+			// Check if today is a holiday
+
+	        for (Holiday holiday : allHolidays) {
+	            if (holiday.getHolidayDate().equals(today)) {
+	                canMarkAttendance = false;
+	                disableReason = "Holiday";
+	                break;
+	            }
+	        }
+			// If it's not a holiday, check if the user is on approved leave today
+
+	        if (canMarkAttendance) {
+	            for (LeaveRequest lr : leaveHistory) {
+	                if ("APPROVED".equalsIgnoreCase(lr.getStatus())) {
+	                    LocalDate start = lr.getStartDate().toLocalDate();
+	                    LocalDate end = lr.getEndDate().toLocalDate();
+	                    if (!today.isBefore(start) && !today.isAfter(end)) {
+	                        canMarkAttendance = false;
+	                        disableReason = "On Leave";
+	                        break;
+	                    }
+	                }
+	            }
+	        }
+	    }
+
+	    request.setAttribute("pendingRequestsCount", pendingRequestsCount);
+	    request.setAttribute("teamMembersCount", teamMembersCount);
+	    request.setAttribute("myLeavesCount", myLeavesCount);
+	    request.setAttribute("myLeaveBalance", myLeaveBalance);
+	    request.setAttribute("upcomingHolidays", upcomingHolidays);
+	    
+	    request.setAttribute("isAttendanceMarkedToday", isAttendanceMarkedToday);
+	    request.setAttribute("canMarkAttendance", canMarkAttendance);
+	    request.setAttribute("disableReason", disableReason);
+
+	    request.setAttribute("view", "dashboard");
+	    request.getRequestDispatcher("/views/manager/manager_home.jsp").forward(request, response);
 	}
-
 	private void showPendingRequestsPage(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		User manager = (User) request.getSession().getAttribute("user");
@@ -242,12 +345,15 @@ public class ManagerController extends HttpServlet {
 
 		if ("approve".equals(decision)) {
 			success = leaveService.approveLeave(leaveId);
-			if (success)
+			if (success) {
 				session.setAttribute("success_toast", "Leave request approved.");
+			}
 		} else if ("reject".equals(decision)) {
-			success = leaveService.rejectLeave(leaveId);
-			if (success)
+			String reason = request.getParameter("rejectionReason");
+			success = leaveService.rejectLeave(leaveId, reason); // Pass the reason to the service
+			if (success) {
 				session.setAttribute("success_toast", "Leave request rejected.");
+			}
 		}
 
 		if (!success) {
@@ -262,19 +368,59 @@ public class ManagerController extends HttpServlet {
 		HttpSession session = request.getSession();
 		User manager = (User) session.getAttribute("user");
 
-		LeaveRequest leave = new LeaveRequest();
-		leave.setUserId(manager.getId());
-		leave.setStartDate(Date.valueOf(request.getParameter("startDate")));
-		leave.setEndDate(Date.valueOf(request.getParameter("endDate")));
-		leave.setReason(request.getParameter("reason"));
+		try {
+			LocalDate startDate = LocalDate.parse(request.getParameter("startDate"));
+			LocalDate endDate = LocalDate.parse(request.getParameter("endDate"));
+			String reason = request.getParameter("reason");
 
-		boolean success = leaveService.applyForLeave(leave);
-		if (success) {
-			session.setAttribute("success_toast", "Leave application submitted!");
-			response.sendRedirect(request.getContextPath() + "/manager?action=showLeaveHistory");
-		} else {
-			session.setAttribute("error_toast", "Failed to submit application.");
-			response.sendRedirect(request.getContextPath() + "/manager?action=showApplyLeave");
+			if (startDate.isAfter(endDate)) {
+				session.setAttribute("error_toast", "Start date cannot be after the end date.");
+				response.sendRedirect(request.getContextPath() + "/manager?action=showAttendanceLeave");
+				return;
+			}
+
+			List<Holiday> holidays = holidayService.getAllHolidays();
+			Set<LocalDate> holidayDates = new HashSet<>();
+			holidays.forEach(h -> holidayDates.add(h.getHolidayDate()));
+
+			LocalDate currentDate = startDate;
+			while (!currentDate.isAfter(endDate)) {
+				DayOfWeek day = currentDate.getDayOfWeek();
+				if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {
+					session.setAttribute("error_toast", "Leave cannot be applied for on weekends.");
+					response.sendRedirect(request.getContextPath() + "/manager?action=showAttendanceLeave");
+					return;
+				}
+				if (holidayDates.contains(currentDate)) {
+					session.setAttribute("error_toast", "Leave cannot be applied for on a public holiday.");
+					response.sendRedirect(request.getContextPath() + "/manager?action=showAttendanceLeave");
+					return;
+				}
+				currentDate = currentDate.plusDays(1);
+			}
+			if (!leaveService.canApplyForLeaveThisMonth(manager.getId(), startDate, endDate)) {
+				session.setAttribute("error_toast", "This leave would exceed the monthly limit of 2 total days.");
+				response.sendRedirect(request.getContextPath() + "/manager?action=showAttendanceLeave");
+				return;
+			}
+
+			LeaveRequest leave = new LeaveRequest();
+			leave.setUserId(manager.getId());
+			leave.setStartDate(Date.valueOf(startDate));
+			leave.setEndDate(Date.valueOf(endDate));
+			leave.setReason(reason);
+
+			boolean success = leaveService.applyForLeave(leave);
+			if (success) {
+				session.setAttribute("success_toast", "Leave application submitted!");
+				response.sendRedirect(request.getContextPath() + "/manager?action=showLeaveHistory");
+			} else {
+				session.setAttribute("error_toast", "Failed to submit application.");
+				response.sendRedirect(request.getContextPath() + "/manager?action=showAttendanceLeave");
+			}
+		} catch (Exception e) {
+			session.setAttribute("error_toast", "Invalid data provided. Please select dates from the calendar.");
+			response.sendRedirect(request.getContextPath() + "/manager?action=showAttendanceLeave");
 		}
 	}
 }

@@ -9,6 +9,7 @@ public class LeaveRequest {
 	private Date endDate;
 	private String reason;
 	private String status;
+	private String rejectionReason;
 	private String employeeFirstName;
 	private String employeeLastName;
 
@@ -74,5 +75,13 @@ public class LeaveRequest {
 
 	public void setEmployeeLastName(String lastName) {
 		this.employeeLastName = lastName;
+	}
+
+	public String getRejectionReason() {
+		return rejectionReason;
+	}
+
+	public void setRejectionReason(String rejectionReason) {
+		this.rejectionReason = rejectionReason;
 	}
 }

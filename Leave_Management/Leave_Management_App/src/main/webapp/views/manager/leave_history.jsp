@@ -3,23 +3,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Your Personal Leave History</title>
+    <!-- Poppins Font Import -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons (for the info icon) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <style>
-        body, .card, .table, .badge {
+        body, .card, .table, .badge, .modal-title, .modal-body, .btn {
             font-family: 'Poppins', Arial, sans-serif !important;
         }
         h3 {
             font-weight: 700;
-            font-size: 2rem;
+            font-size: 2.2rem;
             color: #232323;
             margin-bottom: 1.6rem;
         }
         .modern-card {
             background: #fff;
-            border-radius: 1.25rem;
-            box-shadow: 0 6px 28px rgba(44,62,80,0.14), 0 1.5px 7px rgba(44,62,80,0.08);
-            padding: 2rem 2.1rem 2.2rem 2.1rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 6px 28px rgba(44,62,80,0.1), 0 1.5px 7px rgba(44,62,80,0.06);
+            padding: 2rem;
             margin-bottom: 2rem;
             border: 1px solid #f1f4f6;
         }
@@ -31,9 +35,9 @@
             background: #f8fafb !important;
             border-bottom: 2px solid #e8ecef;
             font-weight: 600;
-            font-size: 1.05rem;
+            font-size: 1rem;
             color: #495057;
-            letter-spacing: 0.01em;
+            letter-spacing: 0.02em;
             text-transform: uppercase;
         }
         .table-striped > tbody > tr:nth-of-type(odd) {
@@ -44,92 +48,137 @@
             transition: background 0.2s;
         }
         .badge {
-            font-size: 1rem;
-            padding: 0.5em 0.9em;
-            border-radius: 1.2em;
+            font-size: 0.95rem;
+            padding: 0.5em 1em;
+            border-radius: 50rem; /* pill shape */
             font-weight: 600;
             letter-spacing: 0.01em;
         }
         .badge.bg-success {
-            background: linear-gradient(90deg, #4be160 0%, #42a556 100%);
-            color: #fff;
+            background-color: #d4edda !important;
+            color: #155724 !important;
         }
         .badge.bg-danger {
-            background: linear-gradient(90deg, #ff5858 0%, #fa7e1e 100%);
-            color: #fff;
+            background-color: #f8d7da !important;
+            color: #721c24 !important;
+            cursor: pointer; /* Indicates it's clickable */
+            transition: background-color 0.2s;
+        }
+        .badge.bg-danger:hover {
+            background-color: #f1b0b7 !important;
         }
         .badge.bg-warning {
-            background: linear-gradient(90deg, #ffe259 0%, #ffa751 100%);
-            color: #232323 !important;
+            background-color: #fff3cd !important;
+            color: #856404 !important;
         }
         .text-muted {
             color: #8d99ae !important;
         }
+
+        /* Responsive Table Styles */
         @media (max-width: 767.98px) {
-            .modern-card {
-                padding: 1rem 0.6rem;
-            }
+            .modern-card { padding: 1rem 0.6rem; }
             .table thead { display: none; }
-            .table, .table tbody, .table tr, .table td {
-                display: block;
-                width: 100%;
-            }
-            .table tr { margin-bottom: 1rem; }
-            .table td {
-                text-align: right;
-                position: relative;
-                padding-left: 50%;
-                border: none;
-                border-bottom: 1px solid #e8ecef;
-            }
+            .table, .table tbody, .table tr, .table td { display: block; width: 100%; }
+            .table tr { margin-bottom: 1rem; border: 1px solid #e8ecef; border-radius: 0.8rem; padding: 0.5rem; }
+            .table td { text-align: right; position: relative; padding-left: 50%; border: none; padding-bottom: 0.8rem; padding-top: 0.8rem; }
             .table td:before {
                 content: attr(data-label);
                 position: absolute;
                 left: 1rem;
-                top: 0.6rem;
                 width: 48%;
                 text-align: left;
                 font-weight: 600;
                 color: #495057;
-                font-size: 1rem;
             }
+            .text-center { text-align: right !important; }
         }
     </style>
 </head>
 <body>
     <h3>Your Personal Leave History</h3>
     <div class="modern-card">
-        <table class="table table-striped table-hover">
-            <thead class="table-light">
-                <tr>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Reason</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="leave" items="${leaveHistory}">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead>
                     <tr>
-                        <td data-label="Start Date"><c:out value="${leave.startDate}"/></td>
-                        <td data-label="End Date"><c:out value="${leave.endDate}"/></td>
-                        <td data-label="Reason"><c:out value="${leave.reason}"/></td>
-                        <td data-label="Status">
-                            <c:choose>
-                                <c:when test="${leave.status eq 'APPROVED'}"><span class="badge bg-success">Approved</span></c:when>
-                                <c:when test="${leave.status eq 'REJECTED'}"><span class="badge bg-danger">Rejected</span></c:when>
-                                <c:otherwise><span class="badge bg-warning text-dark">Pending</span></c:otherwise>
-                            </c:choose>
-                        </td>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Reason</th>
+                        <th class="text-center">Status</th>
                     </tr>
-                </c:forEach>
-                <c:if test="${empty leaveHistory}">
-                    <tr>
-                        <td colspan="4" class="text-center text-muted">You have not applied for any leaves yet.</td>
-                    </tr>
-                </c:if>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <c:forEach var="leave" items="${leaveHistory}">
+                        <tr>
+                            <td data-label="Start Date"><c:out value="${leave.startDate}"/></td>
+                            <td data-label="End Date"><c:out value="${leave.endDate}"/></td>
+                            <td data-label="Reason"><c:out value="${leave.reason}"/></td>
+                            <td data-label="Status" class="text-center">
+                                <c:choose>
+                                    <c:when test="${leave.status eq 'APPROVED'}">
+                                        <span class="badge bg-success">Approved</span>
+                                    </c:when>
+                                    <c:when test="${leave.status eq 'REJECTED'}">
+                                        <span class="badge bg-danger" 
+                                              data-bs-toggle="modal" 
+                                              data-bs-target="#reasonModal" 
+                                              data-rejection-reason="<c:out value='${leave.rejectionReason}'/>">
+                                            Rejected <i class="bi bi-info-circle ms-1"></i>
+                                        </span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span class="badge bg-warning">Pending</span>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    <c:if test="${empty leaveHistory}">
+                        <tr>
+                            <td colspan="4" class="text-center text-muted p-4">You have no leave records to display.</td>
+                        </tr>
+                    </c:if>
+                </tbody>
+            </table>
+        </div>
     </div>
+
+    <!-- Rejection Reason Modal -->
+    <div class="modal fade" id="reasonModal" tabindex="-1" aria-labelledby="reasonModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reasonModalLabel">
+                        <i class="bi bi-chat-right-text-fill me-2 text-danger"></i>Rejection Comment
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalRejectionReasonText" class="fst-italic text-center fs-5 p-3"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript to pass the comment to the modal -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var reasonModal = document.getElementById('reasonModal');
+            if (reasonModal) {
+                reasonModal.addEventListener('show.bs.modal', function (event) {
+                    var badge = event.relatedTarget;
+                    var reason = badge.getAttribute('data-rejection-reason');
+                    var modalBody = reasonModal.querySelector('#modalRejectionReasonText');
+                    
+                    if (reason && reason.trim() !== '') {
+                        modalBody.textContent = '"' + reason + '"';
+                    } else {
+                        modalBody.textContent = 'No comment was provided by the approver.';
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

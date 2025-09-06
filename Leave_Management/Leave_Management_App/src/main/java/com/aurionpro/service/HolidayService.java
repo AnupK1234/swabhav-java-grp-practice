@@ -19,4 +19,12 @@ public class HolidayService {
 	public void deleteHoliday(int id) {
 		dao.delete(id);
 	}
+	public List<Holiday> getUpcomingHolidays() {
+        List<Holiday> allHolidays = dao.findAll();
+        LocalDate today = LocalDate.now();
+        
+        return allHolidays.stream()
+                .filter(holiday -> !holiday.getHolidayDate().isBefore(today)) // Keep holidays that are today or in the future
+                .collect(java.util.stream.Collectors.toList());
+    }
 }

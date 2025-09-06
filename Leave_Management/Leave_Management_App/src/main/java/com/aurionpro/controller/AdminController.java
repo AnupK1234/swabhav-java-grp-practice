@@ -154,26 +154,28 @@ public class AdminController extends HttpServlet {
 	}
 
 	private void processLeaveRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		int leaveId = Integer.parseInt(request.getParameter("leaveId"));
-		String decision = request.getParameter("decision");
-		HttpSession session = request.getSession();
-		boolean success = false;
+	    int leaveId = Integer.parseInt(request.getParameter("leaveId"));
+	    String decision = request.getParameter("decision");
+	    HttpSession session = request.getSession();
+	    boolean success = false;
 
-		if ("approve".equals(decision)) {
-			success = leaveService.approveLeave(leaveId);
-			if (success)
-				session.setAttribute("success_toast", "Leave request approved.");
-		} else if ("reject".equals(decision)) {
-			success = leaveService.rejectLeave(leaveId);
-			if (success)
-				session.setAttribute("success_toast", "Leave request rejected.");
-		}
+	    if ("approve".equals(decision)) {
+	        success = leaveService.approveLeave(leaveId);
+	        if (success)
+	            session.setAttribute("success_toast", "Leave request approved.");
+	    } else if ("reject".equals(decision)) {
+	        // Get the rejection reason from the modal form
+	        String reason = request.getParameter("rejectionReason");
+	        success = leaveService.rejectLeave(leaveId, reason);
+	        if (success)
+	            session.setAttribute("success_toast", "Leave request rejected.");
+	    }
 
-		if (!success) {
-			session.setAttribute("error_toast", "Failed to process leave request.");
-		}
+	    if (!success) {
+	        session.setAttribute("error_toast", "Failed to process leave request.");
+	    }
 
-		response.sendRedirect(request.getContextPath() + "/admin?action=showPendingRequests");
+	    response.sendRedirect(request.getContextPath() + "/admin?action=showPendingRequests");
 	}
 
 }

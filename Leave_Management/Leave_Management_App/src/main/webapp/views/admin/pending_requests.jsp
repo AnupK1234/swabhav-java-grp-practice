@@ -68,47 +68,71 @@ h3 {
 
 	<div class="modern-card">
 		<div class="table-responsive">
-			<table class="table table-hover align-middle" id="requestsTable">
-				<thead>
-					<tr>
-						<th>Employee Name</th>
-						<th>Start Date</th>
-						<th>End Date</th>
-						<th>Reason</th>
-						<th class="text-center">Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach var="req" items="${pendingRequests}">
-						<tr>
-							<td><c:out
-									value="${req.employeeFirstName} ${req.employeeLastName}" /></td>
-							<td><c:out value="${req.startDate}" /></td>
-							<td><c:out value="${req.endDate}" /></td>
-							<td><c:out value="${req.reason}" /></td>
-							<td class="text-center">
-								<form action="${pageContext.request.contextPath}/admin"
-									method="post" class="d-inline">
-									<input type="hidden" name="action" value="processLeave">
-									<input type="hidden" name="leaveId" value="${req.id}">
-									<button type="submit" name="decision" value="approve"
-										class="btn btn-success btn-sm">Approve</button>
-									<button type="submit" name="decision" value="reject"
-										class="btn btn-danger btn-sm">Reject</button>
-								</form>
-							</td>
-						</tr>
-					</c:forEach>
-					<c:if test="${empty pendingRequests}">
-						<tr>
-							<td colspan="5" class="text-center text-muted p-4">There are
-								no pending leave requests from your team.</td>
-						</tr>
-					</c:if>
-				</tbody>
-			</table>
-		</div>
+            <table class="table table-hover align-middle" id="requestsTable">
+                <thead>
+                    <tr>
+                        <th>Employee Name</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Reason</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="req" items="${pendingRequests}">
+                        <tr>
+                            <td><c:out value="${req.employeeFirstName} ${req.employeeLastName}" /></td>
+                            <td><c:out value="${req.startDate}" /></td>
+                            <td><c:out value="${req.endDate}" /></td>
+                            <td><c:out value="${req.reason}" /></td>
+                            <td class="text-center">
+                                <!-- Approve form remains the same -->
+                                <form action="${pageContext.request.contextPath}/admin" method="post" class="d-inline">
+                                    <input type="hidden" name="action" value="processLeave">
+                                    <input type="hidden" name="leaveId" value="${req.id}">
+                                    <button type="submit" name="decision" value="approve" class="btn btn-success btn-sm">Approve</button>
+                                </form>
+                                
+                                <!-- NEW: Button to trigger the rejection modal -->
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#rejectModal" data-leave-id="${req.id}">
+                                    Reject
+                                </button>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    <c:if test="${empty pendingRequests}"><!-- ... --></c:if>
+                </tbody>
+            </table>
+        </div>
 	</div>
+	
+	   <!-- NEW: Rejection Reason Modal -->
+	 <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rejectModalLabel">Reason for Rejection</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="${pageContext.request.contextPath}/admin" method="post">
+                    <div class="modal-body">
+                        <input type="hidden" name="action" value="processLeave">
+                        <input type="hidden" name="decision" value="reject">
+                        <input type="hidden" name="leaveId" id="modalLeaveId">
+                        
+                        <div class="mb-3">
+                            <label for="rejectionReason" class="form-label">Please provide a comment:</label>
+                            <textarea class="form-control" id="rejectionReason" name="rejectionReason" rows="3" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">Submit Rejection</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 	<!-- *** NEW: JavaScript for Live Search *** -->
 	<script>
@@ -136,6 +160,15 @@ h3 {
 				}
 			}
 		}
+		
+		  var rejectModal = document.getElementById('rejectModal');
+	        rejectModal.addEventListener('show.bs.modal', function (event) {
+	            var button = event.relatedTarget;
+	            var leaveId = button.getAttribute('data-leave-id');
+	            var modalLeaveIdInput = rejectModal.querySelector('#modalLeaveId');
+	            modalLeaveIdInput.value = leaveId;
+	        });
+		
 	</script>
 </body>
 </html>

@@ -83,9 +83,24 @@ public class AttendanceDAO {
 			ps.setInt(1, userId);
 			ps.setDate(2, date);
 			try (ResultSet rs = ps.executeQuery()) {
-				return rs.next(); // true if already exists
+				return rs.next(); 
 			}
 		}
 	}
+	public int countPresentDaysInCurrentMonth(int userId) {
+        String sql = "SELECT COUNT(id) FROM attendance WHERE user_id = ? AND status = 'PRESENT' AND MONTH(date) = MONTH(CURRENT_DATE()) AND YEAR(date) = YEAR(CURRENT_DATE())";
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
 }
