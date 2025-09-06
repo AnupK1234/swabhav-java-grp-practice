@@ -2,10 +2,14 @@ package com.aurionpro.controller;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
 
-import com.aurionpro.dao.AttendanceDAO;
+import com.aurionpro.dao.EmployeeDAO;
 import com.aurionpro.dao.HolidayDAO;
+import com.aurionpro.dao.LeaveRequestDao;
+import com.aurionpro.dao.UserDao;
+import com.aurionpro.model.Holiday;
 import com.aurionpro.model.LeaveRequest;
 import com.aurionpro.model.User;
 import com.aurionpro.service.LeaveService;
@@ -99,18 +103,34 @@ public class AdminController extends HttpServlet {
 			throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		User admin = (User) session.getAttribute("user");
+		EmployeeDAO employeeDAO = new EmployeeDAO();
+		LeaveRequestDao leaveDAO = new LeaveRequestDao();
+		HolidayDAO holidayDAO = new HolidayDAO();
+		int employeeCount = 0, managerCount = 0, pendingCount = 0, holidayCount = 0;
+		List<LeaveRequest> recentPending = null;
+		List<Holiday> upcomingHolidays = null;
 
-//		int pendingRequestsCount = leaveService.getPendingRequestsForManager(manager.getId()).size();
-//		int teamMembersCount = userService.getEmployeesByManager(manager.getId()).size();
-//		int myLeavesCount = leaveService.getLeaveHistoryForUser(manager.getId()).size();
-//		int myLeaveBalance = manager.getLeaveBalance();
-//
-//		request.setAttribute("pendingRequestsCount", pendingRequestsCount);
-//		request.setAttribute("teamMembersCount", teamMembersCount);
-//		request.setAttribute("myLeavesCount", myLeavesCount);
-//		request.setAttribute("myLeaveBalance", myLeaveBalance);
+		try {
+			employeeCount = employeeDAO.countByRole("EMPLOYEE");
+			managerCount = employeeDAO.countByRole("MANAGER");
+			pendingCount = leaveDAO.countPendingRequests();
+			holidayCount = holidayDAO.countUpcomingHolidays();
 
+			recentPending = leaveDAO.findRecentPendingRequests(5);
+			upcomingHolidays = holidayDAO.findUpcomingHolidays(5);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		request.setAttribute("employeeCount", employeeCount);
+		request.setAttribute("managerCount", managerCount);
+		request.setAttribute("pendingCount", pendingCount);
+		request.setAttribute("holidayCount", holidayCount);
+		request.setAttribute("recentPendingRequests", recentPending);
+		request.setAttribute("upcomingHolidays", upcomingHolidays);
 		request.setAttribute("view", "dashboard");
+
 		request.getRequestDispatcher("/views/admin/dashboard.jsp").forward(request, response);
 	}
 

@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,14 +53,43 @@ public class HolidayDAO {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public void addHoliday(Date holidayDate, String description) throws SQLException {
-        String sql = "INSERT INTO holidays (holiday_date, title) VALUES (?, ?)";
-        try (Connection conn = DatabaseUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setDate(1, holidayDate);
-            ps.setString(2, description);
-            ps.executeUpdate();
-        }
-    }
+		String sql = "INSERT INTO holidays (holiday_date, title) VALUES (?, ?)";
+		try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setDate(1, holidayDate);
+			ps.setString(2, description);
+			ps.executeUpdate();
+		}
+	}
+
+	public int countUpcomingHolidays() throws SQLException {
+		String sql = "SELECT COUNT(*) FROM holidays WHERE holiday_date >= CURDATE()";
+		try (Connection conn = DatabaseUtil.getConnection();
+				Statement st = conn.createStatement();
+				ResultSet rs = st.executeQuery(sql)) {
+			if (rs.next())
+				return rs.getInt(1);
+		}
+		return 0;
+	}
+
+	public List<Holiday> findUpcomingHolidays(int limit) throws SQLException {
+		List<Holiday> list = new ArrayList<>();
+		String sql = "SELECT * FROM holidays WHERE holiday_date >= CURDATE() ORDER BY holiday_date ASC LIMIT ?";
+		try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setInt(1, limit);
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					Holiday h = new Holiday();
+					h.setId(rs.getInt("id"));
+					h.setHolidayDate(rs.getDate("holiday_date").toLocalDate());
+					h.setTitle(rs.getString("title"));
+					list.add(h);
+				}
+			}
+		}
+		return list;
+	}
+
 }

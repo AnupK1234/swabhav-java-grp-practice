@@ -239,9 +239,9 @@ body {
 
 	<!-- Main Content Area -->
 	<div class="flex-grow-1 p-4 content">
-		<%-- <c:if test="${requestScope.view == 'dashboard'}">
+		<c:if test="${requestScope.view == 'dashboard'}">
             <jsp:include page="dashboard_content.jsp" />
-        </c:if> --%>
+        </c:if>
 		<c:if test="${requestScope.view == 'pending_requests'}">
 			<jsp:include page="pending_requests.jsp" />
 		</c:if>
