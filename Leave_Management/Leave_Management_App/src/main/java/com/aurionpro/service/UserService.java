@@ -11,9 +11,11 @@ public class UserService {
 
 	private UserDao userDao;
 	private EmployeeDAO empDao;
+	private AuthService authService;
 
 	public UserService() {
 		this.userDao = new UserDao();
+		this.authService = new AuthService();
 	}
 
 	public List<User> getEmployeesByManager(int managerId) {
@@ -36,8 +38,17 @@ public class UserService {
 	public int getLeaveBalance(int id) {
 		return userDao.getLeaveBalance(id);
 	}
-	
+
 	public List<User> getAllEmployees() {
 		return userDao.findAllEmployees();
+	}
+
+	public User findByEmail(String email) {
+		return userDao.findUserByEmail(email);
+	}
+
+	public void updatePassword(String email, String password) {
+		String hashedPassword = authService.hashPassword(password);
+		userDao.updatePassword(email, hashedPassword);
 	}
 }

@@ -105,20 +105,38 @@ body {
 </style>
 </head>
 <body>
-	 <div class="toast-container toast-notification">
-        <c:if test="${not empty sessionScope.success_toast}">
-            <div class="toast show align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="d-flex"><div class="toast-body"><i class="bi bi-check-circle-fill me-2"></i> ${sessionScope.success_toast}</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button></div>
-            </div>
-            <c:remove var="success_toast" scope="session" />
-        </c:if>
-        <c:if test="${not empty sessionScope.error_toast}">
-            <div class="toast show align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="d-flex"><div class="toast-body"><i class="bi bi-exclamation-triangle-fill me-2"></i> ${sessionScope.error_toast}</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button></div>
-            </div>
-            <c:remove var="error_toast" scope="session" />
-        </c:if>
-    </div>
+	<div class="toast-container toast-notification">
+		<c:if test="${not empty sessionScope.success_toast}">
+			<div
+				class="toast show align-items-center text-white bg-success border-0"
+				role="alert" aria-live="assertive" aria-atomic="true">
+				<div class="d-flex">
+					<div class="toast-body">
+						<i class="bi bi-check-circle-fill me-2"></i>
+						${sessionScope.success_toast}
+					</div>
+					<button type="button" class="btn-close btn-close-white me-2 m-auto"
+						data-bs-dismiss="toast" aria-label="Close"></button>
+				</div>
+			</div>
+			<c:remove var="success_toast" scope="session" />
+		</c:if>
+		<c:if test="${not empty sessionScope.error_toast}">
+			<div
+				class="toast show align-items-center text-white bg-danger border-0"
+				role="alert" aria-live="assertive" aria-atomic="true">
+				<div class="d-flex">
+					<div class="toast-body">
+						<i class="bi bi-exclamation-triangle-fill me-2"></i>
+						${sessionScope.error_toast}
+					</div>
+					<button type="button" class="btn-close btn-close-white me-2 m-auto"
+						data-bs-dismiss="toast" aria-label="Close"></button>
+				</div>
+			</div>
+			<c:remove var="error_toast" scope="session" />
+		</c:if>
+	</div>
 	<div class="login-container">
 		<div class="container">
 			<div class="row justify-content-center">
@@ -182,21 +200,31 @@ body {
 								</div>
 							</form>
 						</div>
+						<!-- Forgot Password Link -->
+						<div class="text-center mt-3">
+							<a href="${pageContext.request.contextPath}/forgot-password"
+								class="text-decoration-none"> <i
+								class="bi bi-question-circle me-1"></i> Forgot Password?
+							</a>
+						</div>
 					</div>
 				</div>
+
 			</div>
+
 		</div>
 	</div>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-	 <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var toastEl = document.querySelector('.toast.show');
-            if (toastEl) {
-                setTimeout(function () {
-                    new bootstrap.Toast(toastEl).hide();
-                }, 3000);
-            }
-        });
-    </script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			var toastEl = document.querySelector('.toast.show');
+			if (toastEl) {
+				setTimeout(function() {
+					new bootstrap.Toast(toastEl).hide();
+				}, 3000);
+			}
+		});
+	</script>
 </body>
 </html>

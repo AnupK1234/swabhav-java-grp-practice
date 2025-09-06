@@ -15,7 +15,7 @@ public class AuthService {
 		this.userDao = new UserDao();
 	}
 
-	private String hashPassword(String password) {
+	public String hashPassword(String password) {
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
 			byte[] hash = md.digest(password.getBytes(StandardCharsets.UTF_8));
@@ -40,7 +40,7 @@ public class AuthService {
 			if (user.getPassword().equals(hashedPassword)) {
 				return user;
 			}
-		}	
+		}
 		return null;
 	}
 }

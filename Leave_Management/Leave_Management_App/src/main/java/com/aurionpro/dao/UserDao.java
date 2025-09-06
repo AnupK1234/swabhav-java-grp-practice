@@ -138,4 +138,15 @@ public class UserDao {
 		return employees;
 	}
 
+	public void updatePassword(String email, String password) {
+		String sql = "UPDATE users SET password=? WHERE email=?";
+		try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setString(1, password);
+			ps.setString(2, email);
+			ps.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }
