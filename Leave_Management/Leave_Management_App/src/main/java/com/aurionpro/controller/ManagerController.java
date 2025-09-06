@@ -247,7 +247,7 @@ public class ManagerController extends HttpServlet {
 	    int myLeaveBalance = manager.getLeaveBalance();
 
 	    List<Holiday> upcomingHolidays = holidayService.getUpcomingHolidays();
-	    
+	    List<LeaveRequest> recentPendingRequests = leaveService.getRecentPendingRequestsForManager(manager.getId());
 	    List<Holiday> allHolidays = holidayService.getAllHolidays();
 	    List<Attendance> attendanceRecords = attendanceService.getAttendanceForUser(manager.getId());
 	    List<LeaveRequest> leaveHistory = leaveService.getLeaveHistoryForUser(manager.getId());
@@ -299,7 +299,8 @@ public class ManagerController extends HttpServlet {
 	    request.setAttribute("myLeavesCount", myLeavesCount);
 	    request.setAttribute("myLeaveBalance", myLeaveBalance);
 	    request.setAttribute("upcomingHolidays", upcomingHolidays);
-	    
+	    request.setAttribute("recentPendingRequests", recentPendingRequests);
+
 	    request.setAttribute("isAttendanceMarkedToday", isAttendanceMarkedToday);
 	    request.setAttribute("canMarkAttendance", canMarkAttendance);
 	    request.setAttribute("disableReason", disableReason);

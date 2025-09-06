@@ -225,5 +225,36 @@ public class LeaveRequestDao {
 		}
 		return list;
 	}
+	public List<LeaveRequest> findRecentPendingRequestsByManager(int managerId, int limit) {
+        List<LeaveRequest> requests = new ArrayList<>();
+        String sql = "SELECT lr.*, u.first_name, u.last_name FROM leave_requests lr " +
+                     "JOIN users u ON lr.user_id = u.id " +
+                     "WHERE u.manager_id = ? AND lr.status = 'PENDING' " +
+                     "ORDER BY lr.created_at DESC LIMIT ?";
+        
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, managerId);
+            stmt.setInt(2, limit);
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                LeaveRequest req = new LeaveRequest();
+                req.setId(rs.getInt("id"));
+                req.setUserId(rs.getInt("user_id"));
+                req.setStartDate(rs.getDate("start_date"));
+                req.setEndDate(rs.getDate("end_date"));
+                req.setReason(rs.getString("reason"));
+                req.setStatus(rs.getString("status"));
+                req.setEmployeeFirstName(rs.getString("first_name"));
+                req.setEmployeeLastName(rs.getString("last_name"));
+                requests.add(req);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return requests;
+    }
 
 }
